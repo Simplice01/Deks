@@ -88,6 +88,11 @@ h6,
     outline: none;
     transition: .5s;
 }
+.brand-name{
+    font-size: 28px;
+    font-weight: 700;
+    color: rgb(0, 190, 243);
+}
 
 .sticky-top.navbar-light .navbar-nav .nav-link {
     padding: 20px 0;
