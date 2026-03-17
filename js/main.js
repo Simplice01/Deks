@@ -150,38 +150,40 @@ function openModal(service) {
         <li>Mise à jour & maintenance</li>
       </ul>
     `,
-        shopify: `
-    <h3>Création de Boutique Shopify</h3>
-    <p>Lancez votre boutique en ligne avec un site Shopify professionnel, rapide et optimisé pour les ventes.</p>
-    <ul>
-        <li>Conception et personnalisation complète du thème</li>
-        <li>Ajout de produits, collections et fiches détaillées</li>
-        <li>Intégration des paiements et livraisons</li>
-        <li>Optimisation mobile et SEO</li>
-        <li>Formation à la gestion de la boutique</li>
-    </ul>
+        SaaS: `
+<h3>Plateformes SaaS</h3>
+<p>Développement de plateformes SaaS modernes permettant de proposer des services en ligne accessibles par abonnement. Les solutions sont conçues pour être sécurisées, évolutives et faciles à utiliser par vos utilisateurs.</p>
+
+<ul>
+    <li>Conception d’applications web SaaS personnalisées</li>
+    <li>Système de comptes utilisateurs et gestion des rôles</li>
+    <li>Tableau de bord et gestion des données</li>
+    <li>API sécurisée et architecture évolutive</li>
+    <li>Intégration de paiements et gestion des abonnements</li>
+</ul>
     `,
-        systemeio: `
-    <h3>Création de Tunnel de Vente Systeme.io</h3>
-    <p>Automatisez vos ventes avec des tunnels optimisés pour convertir vos visiteurs en clients.</p>
-    <ul>
-        <li>Création de pages de capture, de vente et de remerciement</li>
-        <li>Intégration des paiements et email marketing</li>
-        <li>Configuration des automatisations (emails, upsells, downsells)</li>
-        <li>Connexion à votre domaine personnalisé</li>
-        <li>Conseils stratégiques pour maximiser vos conversions</li>
-    </ul>
+        Automatisation: `
+<h3>Automatisation</h3>
+<p>Mise en place de systèmes automatisés permettant de simplifier vos tâches répétitives, d’optimiser votre organisation et de gagner du temps dans la gestion de votre activité.</p>
+
+<ul>
+    <li>Automatisation de tâches et workflows</li>
+    <li>Synchronisation entre différentes applications</li>
+    <li>Automatisation de notifications et d’actions</li>
+    <li>Intégration d’API et connexion entre services</li>
+    <li>Mise en place de systèmes automatisés pour améliorer la productivité</li>
+</ul>
     `,
-    graphisme: `
-  <h3>Design Graphique & Identité Visuelle</h3>
-  <p>Offrez à votre marque une image professionnelle et percutante avec un design unique.</p>
-  <ul>
-    <li>Création de logo sur mesure</li>
-    <li>Charte graphique complète (couleurs, typographies, icônes)</li>
-    <li>Affiches, bannières web et flyers promotionnels</li>
-    <li>Visuels pour réseaux sociaux</li>
-    <li>Refonte graphique de votre image existante</li>
-  </ul>
+    Intégrations: `
+<h3>Intégrations API</h3>
+<p>Connexion de vos applications à des services externes afin d’automatiser les échanges de données, d’ajouter de nouvelles fonctionnalités et d’améliorer l’efficacité de vos systèmes.</p>
+<ul>
+  <li>Connexion à des API de paiement, messagerie ou notification</li>
+  <li>Synchronisation de données entre plusieurs applications</li>
+  <li>Intégration de services tiers dans vos plateformes web</li>
+  <li>Mise en place d’échanges sécurisés entre systèmes</li>
+  <li>Développement de solutions sur mesure adaptées à vos besoins</li>
+</ul>
 `
   };
 
@@ -193,3 +195,60 @@ function closeModal() {
   document.getElementById('serviceModal').style.display = 'none';
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const faqBoxes = document.querySelectorAll(".faq-box");
+
+    faqBoxes.forEach((box) => {
+        const button = box.querySelector(".faq-question");
+        const icon = box.querySelector(".faq-icon");
+
+        button.addEventListener("click", function () {
+            const isActive = box.classList.contains("active");
+
+            faqBoxes.forEach((item) => {
+                item.classList.remove("active");
+                const itemIcon = item.querySelector(".faq-icon");
+                if (itemIcon) {
+                    itemIcon.textContent = "+";
+                }
+            });
+
+            if (!isActive) {
+                box.classList.add("active");
+                if (icon) {
+                    icon.textContent = "−";
+                }
+            }
+        });
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const portfolioBoxes = document.querySelectorAll(".portfolio-box");
+
+    portfolioBoxes.forEach((box) => {
+        const button = box.querySelector(".portfolio-question");
+        const icon = box.querySelector(".portfolio-icon");
+
+        button.addEventListener("click", function () {
+            const isActive = box.classList.contains("active");
+
+            portfolioBoxes.forEach((item) => {
+                item.classList.remove("active");
+                const itemIcon = item.querySelector(".portfolio-icon");
+                if (itemIcon) {
+                    itemIcon.textContent = "+";
+                }
+            });
+
+            if (!isActive) {
+                box.classList.add("active");
+                if (icon) {
+                    icon.textContent = "−";
+                }
+            }
+        });
+    });
+});
