@@ -118,7 +118,7 @@ function toggleDetails(button) {
 function openModal(service) {
   const details = {
     web: `
-      <h3>Développement Web</h3>
+      <h3>Création de sites web professionnels</h3>
       <p>Création de sites vitrines, blogs, e-commerces, SEO, et intégration de solutions de paiement sécurisées.</p>
       <ul>
         <li>Site vitrine</li>
@@ -129,7 +129,7 @@ function openModal(service) {
       </ul>
     `,
     mobile: `
-      <h3>Applications Mobiles</h3>
+      <h3>Plateformes et applications web sur mesure</h3>
       <p>Nous développons des applications intuitives et performantes pour Android et iOS.</p>
       <ul>
         <li>App native (iOS/Android)</li>
@@ -140,7 +140,7 @@ function openModal(service) {
       </ul>
     `,
     software: `
-      <h3>Développement de Logiciels</h3>
+      <h3>Développement d’outils métiers</h3>
       <p>Logiciels sur mesure adaptés aux besoins spécifiques de votre entreprise.</p>
       <ul>
         <li>ERP / CRM personnalisés</li>
@@ -163,7 +163,7 @@ function openModal(service) {
 </ul>
     `,
         Automatisation: `
-<h3>Automatisation</h3>
+<h3>Automatisation des processus</h3>
 <p>Mise en place de systèmes automatisés permettant de simplifier vos tâches répétitives, d’optimiser votre organisation et de gagner du temps dans la gestion de votre activité.</p>
 
 <ul>
@@ -175,7 +175,7 @@ function openModal(service) {
 </ul>
     `,
     Intégrations: `
-<h3>Intégrations API</h3>
+<h3>Intégration de systèmes et API</h3>
 <p>Connexion de vos applications à des services externes afin d’automatiser les échanges de données, d’ajouter de nouvelles fonctionnalités et d’améliorer l’efficacité de vos systèmes.</p>
 <ul>
   <li>Connexion à des API de paiement, messagerie ou notification</li>
