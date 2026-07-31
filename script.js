@@ -91,6 +91,10 @@ function toggleText6(){
 
  document.addEventListener('DOMContentLoaded', function() {
   const carousel = document.getElementById('carousel5');
+  if (!carousel) {
+      return;
+  }
+
   const inner = carousel.querySelector('.carousel-inner');
   const items = carousel.querySelectorAll('.carousel-item');
   const totalItems = items.length;
@@ -154,48 +158,34 @@ const nombreEl2 = document.getElementById("nombre2");
 const nombreEl3 = document.getElementById("nombre3");
 const nombreEl4 = document.getElementById("nombre4");
 
-let nombre = 1;
-let nombre2 = 1;
-let nombre3 = 1;
-let nombre4 = 1;
+function animateLegacyCounter(element, maxValue) {
+  if (!element) {
+    return;
+  }
 
-const interval = setInterval(() => {
-    if (nombre > 36) {
-        clearInterval(interval);
+  let value = 1;
+  const interval = setInterval(() => {
+    if (value > maxValue) {
+      clearInterval(interval);
     } else {
-        nombreEl.textContent = nombre;
-        nombre++;
+      element.textContent = value;
+      value++;
     }
-}, 50);
+  }, 50);
+}
 
-const interval2 = setInterval(() => {
-  if (nombre2 > 21) {
-      clearInterval(interval2);
-  } else {
-      nombreEl2.textContent = nombre2;
-      nombre2++;
-  }
-}, 50);
-const interval3 = setInterval(() => {
-  if (nombre3 > 60) {
-      clearInterval(interval3);
-  } else {
-      nombreEl3.textContent = nombre3;
-      nombre3++;
-  }
-}, 50);
-const interval4 = setInterval(() => {
-  if (nombre4 > 10) {
-      clearInterval(interval4);
-  } else {
-      nombreEl4.textContent = nombre4;
-      nombre4++;
-  }
-}, 50);
+animateLegacyCounter(nombreEl, 36);
+animateLegacyCounter(nombreEl2, 21);
+animateLegacyCounter(nombreEl3, 60);
+animateLegacyCounter(nombreEl4, 10);
 
 const slider = document.querySelector('.slider');
 
 function activate(e) {
+  if (!slider) {
+    return;
+  }
+
   const items = document.querySelectorAll('.item');
   e.target.matches('.next') && slider.append(items[0])
   e.target.matches('.prev') && slider.prepend(items[items.length-1]);
@@ -209,6 +199,9 @@ document.addEventListener('click',activate,false);
 document.addEventListener('DOMContentLoaded', function() {
   const content = document.querySelector('.contentppp');
   const imageContainer = document.querySelector('.image-containerppp');
+  if (!content || !imageContainer) {
+      return;
+  }
 
   // Animation de la transparence et de la translation
   content.style.opacity = '0';
@@ -231,6 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const imageContainer = document.querySelector('.image-containerppp');
 
   // Afficher les divs avec une transition après un court délai
+  if (!content || !imageContainer) {
+      return;
+  }
+
   setTimeout(() => {
     content.style.opacity = '1';
     imageContainer.style.opacity = '1';
@@ -239,6 +236,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
   const text = document.getElementById('textppp');
+  if (!text) {
+      return;
+  }
   const message = "Deks-Tic est une entreprise innovante spécialisée dans le domaine des technologies de l'information et de la communication.";
   let index = 0;
 
@@ -253,7 +253,9 @@ document.addEventListener('DOMContentLoaded', function() {
   showNextLetter();
 });
 
-document.getElementById('contact-form').addEventListener('submit', function(event) {
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+contactForm.addEventListener('submit', function(event) {
   event.preventDefault(); // Empêche l'envoi du formulaire par défaut
 
   // Récupération des valeurs des champs du formulaire
@@ -273,4 +275,5 @@ document.getElementById('contact-form').addEventListener('submit', function(even
     alert('Veuillez remplir tous les champs du formulaire.');
   }
 });
+}
 

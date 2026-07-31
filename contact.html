@@ -3,182 +3,124 @@
 
 <head>
     <meta charset="utf-8">
-    <title>K.Simplice</title>
+    <title>DEKS - Discutez du projet</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="projet logiciel DEKS, projet logiciel, application métier, ERP, CRM, SaaS" name="keywords">
+    <meta content="Présentez votre projet logiciel à DEKS. Le formulaire prépare automatiquement votre message WhatsApp avec vos informations." name="description">
 
-    <!-- Favicon -->
-    <link href="img/bsimpliceimg.png" rel="icon">
-
-
-    <!-- Google Web Fonts -->
+    <link href="image/deks-logo-transparent.png" rel="icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
-
-    <!-- Icon Font Stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/deks.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
-        <!-- Spinner End -->
-
-
-        <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="index.html" class="navbar-brand p-0">
-                <span class="brand-name">K.Simplice</span>
+                    <img src="image/deks-logo-transparent.png" alt="Logo Deks" style="height: 60px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                   <div class="navbar-nav ms-auto py-0">
+                    <div class="navbar-nav ms-auto py-0">
                         <a href="index.html" class="nav-item nav-link">Accueil</a>
-                        <a href="about.html" class="nav-item nav-link">A propos</a>
-                        <a href="service.html" class="nav-item nav-link">Services</a>
-                        <a href="projets.html" class="nav-item nav-link">portfolio</a>
-                        <a href="contact.html" class="nav-item nav-link active">Contacts</a>              
-                   </div>
+                        <a href="about.html" class="nav-item nav-link">À propos</a>
+                        <a href="service.html" class="nav-item nav-link">Solutions</a>
+                    </div>
+                    <a href="#contactForm" class="btn deks-nav-cta ms-lg-3">Discutez du projet</a>
                 </div>
             </nav>
+            <button class="deks-mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Ouvrir le menu"></button>
 
-            <div class="container-xxl py-5 bg-primary hero-header mb-5">
-                <div class="container my-5 py-5 px-lg-5">
-                    <div class="row g-5 py-5">
+            <div class="container-xxl py-5 bg-primary hero-header deks-page-hero mb-5">
+                <div class="container px-lg-5">
+                    <div class="row g-4">
                         <div class="col-12 text-center">
-                            <h1 class="text-white animated zoomIn">Contacts</h1>
-                            <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                            <h1 class="text-white animated zoomIn">Parlez-nous de votre projet logiciel</h1>
+                            <p class="mx-auto">Remplissez le formulaire. Nous préparons votre message WhatsApp avec les informations du projet.</p>
+                            <hr class="bg-white mx-auto mt-4" style="width: 90px;">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Navbar & Hero End -->
 
-
-        <!-- Full Screen Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center justify-content-center">
-                        <div class="input-group" style="max-width: 600px;">
-                            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword">
-                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Full Screen Search End -->
-
-
-        <!-- Contact Start -->
         <div class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="row justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
-                            <h6 class="position-relative d-inline text-primary ps-4">Contactez-nous</h6>
-                            <h2 class="mt-2">Maintenant</h2>
+                    <div class="col-lg-8">
+                        <div class="section-title position-relative text-center mb-5 pb-2">
+                            <h6 class="position-relative d-inline text-primary ps-4">Discutez du projet</h6>
+                            <h2 class="mt-2">Décrivez le besoin. Nous continuons sur WhatsApp.</h2>
                         </div>
-                        <div class="wow fadeInUp" data-wow-delay="0.3s">
-                            <form id="contactForm">
+                        <div>
+                            <form id="contactForm" novalidate>
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
                                             <label for="name">Nom</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating">
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
-                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Votre email professionnel" required>
+                                            <label for="email">Email professionnel</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
-                                            <label for="subject">Subject</label>
+                                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Type de solution" required>
+                                            <label for="subject">Type de projet</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <textarea class="form-control" id="message" name="message" placeholder="Leave a message here" style="height: 150px" required></textarea>
-                                            <label for="message">Projet</label>
+                                            <textarea class="form-control" id="message" name="message" placeholder="Décrivez votre besoin" style="height: 160px" required></textarea>
+                                            <label for="message">Votre besoin</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100 py-3" type="submit">Envoyer</button>
+                                        <button class="btn btn-primary w-100 py-3" type="submit">Soumettre</button>
                                     </div>
                                 </div>
+                                <div class="deks-form-status" id="contactFormStatus" role="status" aria-live="polite"></div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Contact End -->
-        
 
-        <!-- Footer Start -->
         <div class="container-fluid bg-primary text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5 px-lg-5">
                 <div class="row g-5">
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-4">
                         <h5 class="text-white mb-4">Nous joindre</h5>
-                        <p><i class="fa fa-map-marker-alt me-3"></i>Bénin,Abomey-calavi</p>
+                        <p><i class="fa fa-map-marker-alt me-3"></i>Bénin, Abomey-Calavi</p>
                         <p><i class="fa fa-phone-alt me-3"></i>+229 94776256</p>
                         <p><i class="fa fa-envelope me-3"></i>deksinformatique@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href="https://x.com/DKinhoue?s=09"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/profile.php?id=61558247646451"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/kdsman_?igsh=cWwxc2w4OWxmZ3hv"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/in/simplice-kinhoue-5a4b7327a"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-4">
                         <h5 class="text-white mb-4">Liens</h5>
-                        <a class="btn btn-link" href="about.html">A propos</a>
-                        <a class="btn btn-link" href="contact.html">Contacts</a>
-                        <a class="btn btn-link" href="service.html">services</a>
-                        <a class="btn btn-link" href="index.html">Entreprise</a>
-                        <a class="btn btn-link" href="index.html">Informatique</a>
+                        <a class="btn btn-link" href="about.html">À propos</a>
+                        <a class="btn btn-link" href="service.html">Solutions</a>
+                        <a class="btn btn-link" href="contact.html">Discutez du projet</a>
                     </div>
-                    
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Deks</h5>
-                        <p>Deks au service des entreprises et de la société pour un monde plus numérisé </p>
-                        <div class="position-relative w-100 mt-3">
-                            <input class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Your Email" style="height: 48px;">
-                            <button type="button" class="btn shadow-none position-absolute top-0 end-0 mt-1 me-2"><i class="fa fa-paper-plane text-primary fs-4"></i></button>
-                        </div>
+                    <div class="col-md-6 col-lg-4">
+                        <h5 class="text-white mb-4">DEKS</h5>
+                        <p>DEKS développe des logiciels professionnels pour aider les entreprises à gagner du temps, mieux collaborer et piloter leur croissance.</p>
                     </div>
                 </div>
             </div>
@@ -186,46 +128,63 @@
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Deks informatique</a>, Tout droit reservé. 
-							
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-							Réalisé par <a class="border-bottom" href="https://htmlcodex.com">Deks</a>
+                            &copy; <a class="border-bottom" href="index.html">DEKS</a>, Tous droits réservés.
                         </div>
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
                                 <a href="index.html">Accueil</a>
-                                <a href="index.html">Cookies</a>
-                                <a href="index.html">Aide</a>
-                                <a href="index.html">FQAs</a>
+                                <a href="service.html">Solutions</a>
+                                <a href="contact.html">Discutez du projet</a>
+                                <a href="about.html">Entreprise</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Footer End -->
 
-
-        <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        emailjs.init("YFBvpYfac89Gl_LFl"); // Remplacez par votre clé publique EmailJS
-
         document.getElementById('contactForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            emailjs.sendForm('service_9so9dhm', 'template_p2qv3cr', this)
-                .then(function(response) {
-                    console.log('Sent successfully:', response);
-                    alert('Email sent successfully!');
-                }, function(error) {
-                    console.log('Failed to send:', error);
-                    alert('Failed to send email. Please try again later.');
-                });
+            const form = event.currentTarget;
+            const status = document.getElementById('contactFormStatus');
+            form.classList.add('was-validated');
+
+            if (!form.checkValidity()) {
+                if (status) {
+                    status.textContent = 'Merci de compléter les champs requis avant de soumettre votre demande.';
+                    status.classList.add('is-visible');
+                }
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            const whatsappMessage = [
+                'Bonjour DEKS, je souhaite discuter d’un projet logiciel.',
+                '',
+                `Nom : ${name}`,
+                `Email : ${email}`,
+                `Type de projet : ${subject}`,
+                '',
+                `Besoin : ${message}`
+            ].join('\n');
+
+            if (status) {
+                status.textContent = 'Votre message est prêt. Redirection vers WhatsApp...';
+                status.classList.add('is-visible');
+            }
+
+            window.setTimeout(function () {
+                window.location.href = `https://wa.me/22994776256?text=${encodeURIComponent(whatsappMessage)}`;
+            }, 450);
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -237,8 +196,6 @@
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
     <script src="script.js"></script>
-
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
 
