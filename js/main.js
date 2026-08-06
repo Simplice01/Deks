@@ -111,10 +111,10 @@
 
     // Back-office ready placeholders: replace these arrays with API data when available.
     const deksStats = [
-        { group: "clients", value: 15, suffix: "+", label: "clients accompagnés" },
-        { group: "clients", value: 10, suffix: "+", label: "entreprises accompagnées" },
-        { key: "projectsTotal", group: "projects", value: 35, suffix: "+", label: "projets réalisés" },
-        { group: "projects", value: 14, suffix: "+", label: "plateformes publiques déployées" },
+        { group: "clients", value: 35, suffix: "+", label: "clients accompagnés" },
+        { group: "clients", value: 30, suffix: "+", label: "entreprises accompagnées" },
+        { key: "projectsTotal", group: "projects", value: 55, suffix: "+", label: "projets réalisés" },
+        { group: "projects", value: 34, suffix: "+", label: "plateformes publiques déployées" },
         { group: "quality", value: 96, suffix: "%", label: "taux de satisfaction estimé" },
         { group: "quality", value: 5, suffix: " ans", label: "d'expérience depuis 2021" }
     ];
