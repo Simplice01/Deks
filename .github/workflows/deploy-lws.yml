@@ -36,7 +36,7 @@ jobs:
       LWS_USERNAME: ${{ secrets.LWS_USERNAME }}
       LWS_PASSWORD: ${{ secrets.LWS_PASSWORD }}
       LWS_REMOTE_PATH: ${{ secrets.LWS_REMOTE_PATH }}
-      LWS_HOST_FINGERPRINT: ${{ secrets.LWS_HOST_FINGERPRINT }}
+      LWS_HOST_FINGERPRINT: ${{ vars.LWS_HOST_FINGERPRINT }}
       LWS_OPERATION: ${{ inputs.operation }}
       CONFIRM_PRODUCTION_OVERWRITE: ${{ inputs.confirm_production_overwrite }}
     steps:
