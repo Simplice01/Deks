@@ -76,6 +76,8 @@ jobs:
           ssh-keyscan -4 -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" 2>/dev/null > "$known_hosts"
           chmod 600 "$known_hosts"
           if ! ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | grep --fixed-strings --line-regexp --quiet "$LWS_HOST_FINGERPRINT"; then
+            echo "Observed SSH host key fingerprints:"
+            ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | sort -u
             echo "LWS SSH host key did not match LWS_HOST_FINGERPRINT; connection refused." >&2
             exit 1
           fi
