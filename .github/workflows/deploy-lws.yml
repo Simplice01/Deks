@@ -1,0 +1,170 @@
+name: Prepare or deploy DEKS NEXA to LWS
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "check: inspect the remote directory; probe: upload a unique hidden test file; deploy: upload the site files"
+        required: true
+        type: choice
+        options:
+          - check
+          - probe
+          - deploy
+        default: check
+      confirm_production_overwrite:
+        description: "Required for deploy: authorize overwriting matching files in the live site directory"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lws-manual-deploy
+  cancel-in-progress: false
+
+jobs:
+  transfer:
+    name: LWS SFTP ${{ inputs.operation }}
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      LWS_HOST: ${{ secrets.LWS_HOST }}
+      LWS_USERNAME: ${{ secrets.LWS_USERNAME }}
+      LWS_PASSWORD: ${{ secrets.LWS_PASSWORD }}
+      LWS_REMOTE_PATH: ${{ secrets.LWS_REMOTE_PATH }}
+      LWS_HOST_FINGERPRINT: ${{ secrets.LWS_HOST_FINGERPRINT }}
+      LWS_OPERATION: ${{ inputs.operation }}
+      CONFIRM_PRODUCTION_OVERWRITE: ${{ inputs.confirm_production_overwrite }}
+    steps:
+      - name: Check out the selected main branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Check required connection settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in LWS_HOST LWS_USERNAME LWS_PASSWORD LWS_REMOTE_PATH LWS_HOST_FINGERPRINT; do
+            if [[ -z "${!name}" ]]; then
+              echo "Required GitHub secret is missing: ${name}" >&2
+              exit 1
+            fi
+          done
+          if [[ "$LWS_OPERATION" == "deploy" && "$CONFIRM_PRODUCTION_OVERWRITE" != "true" ]]; then
+            echo "Deployment stopped: set confirm_production_overwrite to true for this manual run." >&2
+            exit 1
+          fi
+          if [[ "$LWS_OPERATION" == "deploy" && ! -f index.html ]]; then
+            echo "Deployment stopped: index.html is missing from the repository root." >&2
+            exit 1
+          fi
+
+      - name: Install SFTP password helper
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends sshpass
+
+      - name: Pin and verify the LWS SSH host key
+        shell: bash
+        run: |
+          set -euo pipefail
+          known_hosts="$RUNNER_TEMP/lws_known_hosts"
+          ssh-keyscan -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" 2>/dev/null > "$known_hosts"
+          chmod 600 "$known_hosts"
+          if ! ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | grep --fixed-strings --line-regexp --quiet "$LWS_HOST_FINGERPRINT"; then
+            echo "LWS SSH host key did not match LWS_HOST_FINGERPRINT; connection refused." >&2
+            exit 1
+          fi
+          echo "LWS SSH host key fingerprint verified."
+
+      - name: Check the remote site directory
+        if: inputs.operation == 'check'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
+          import json, os
+          print("cd " + json.dumps(os.environ["LWS_REMOTE_PATH"]))
+          print("pwd")
+          print("ls index.html")
+          print("bye")
+          PY
+          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
+            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -oPreferredAuthentications=password,keyboard-interactive \
+            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
+            "$LWS_USERNAME@$LWS_HOST"
+          echo "SFTP login succeeded and the remote site directory contains index.html."
+
+      - name: Upload and verify a unique non-overwriting probe
+        if: inputs.operation == 'probe'
+        shell: bash
+        run: |
+          set -euo pipefail
+          probe_name=".github-actions-probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.txt"
+          printf 'DEKS NEXA LWS SFTP probe; run %s attempt %s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/$probe_name"
+          export PROBE_NAME="$probe_name"
+          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
+          import json, os
+          print("cd " + json.dumps(os.environ["LWS_REMOTE_PATH"]))
+          print("put " + json.dumps(os.environ["RUNNER_TEMP"] + "/" + os.environ["PROBE_NAME"]) + " " + json.dumps(os.environ["PROBE_NAME"]))
+          print("ls " + json.dumps(os.environ["PROBE_NAME"]))
+          print("bye")
+          PY
+          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
+            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -oPreferredAuthentications=password,keyboard-interactive \
+            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
+            "$LWS_USERNAME@$LWS_HOST"
+          echo "Unique probe uploaded and verified. It is hidden and intentionally left in place; no remote files are deleted."
+
+      - name: Upload the reviewed static site files
+        if: inputs.operation == 'deploy' && inputs.confirm_production_overwrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
+          import json, os
+          from pathlib import Path
+
+          root = Path.cwd()
+          files = [
+              Path("index.html"), Path("about.html"), Path("contact.html"),
+              Path("projets.html"), Path("service.html"),
+              Path("css/deks.css"),
+              Path("js/main.js"), Path("js/deks-ui.js"), Path("js/accueil.js"),
+          ]
+          for folder in (Path("img"), Path("image")):
+              if folder.is_dir():
+                  files.extend(path.relative_to(root) for path in folder.rglob("*") if path.is_file())
+
+          files = sorted(set(files))
+          missing = [str(path) for path in files if not (root / path).is_file()]
+          if missing:
+              raise SystemExit("Required production files are missing: " + ", ".join(missing))
+
+          remote_root = os.environ["LWS_REMOTE_PATH"]
+          print("cd " + json.dumps(remote_root))
+          directories = sorted({path.parent.as_posix() for path in files if path.parent != Path(".")})
+          for directory in directories:
+              current = ""
+              for part in Path(directory).parts:
+                  current = f"{current}/{part}" if current else part
+                  print("-mkdir " + json.dumps(current))
+          for path in files:
+              local_path = (root / path).as_posix()
+              remote_path = path.as_posix()
+              print("put " + json.dumps(local_path) + " " + json.dumps(remote_path))
+          print("ls index.html")
+          print("bye")
+          PY
+          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
+            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -oPreferredAuthentications=password,keyboard-interactive \
+            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
+            "$LWS_USERNAME@$LWS_HOST"
+          echo "Selected static site files uploaded and index.html verified. No remote files were deleted."

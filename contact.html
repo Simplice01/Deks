@@ -3,149 +3,103 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DEKS - Discutez du projet</title>
+    <title>Deks Nexa - Discutez du projet</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="projet logiciel DEKS, projet logiciel, application métier, ERP, CRM, SaaS" name="keywords">
-    <meta content="Présentez votre projet logiciel à DEKS. Le formulaire prépare automatiquement votre message WhatsApp avec vos informations." name="description">
+    <meta content="projet logiciel Deks Nexa, projet logiciel, application métier, ERP, CRM, SaaS" name="keywords">
+    <meta content="Présentez votre projet logiciel à Deks Nexa. Le formulaire prépare automatiquement votre message WhatsApp avec vos informations." name="description">
+    <meta name="theme-color" content="#0A0A0A">
+    <script>document.documentElement.classList.add("js");</script>
 
+    <!-- Favicon -->
     <link href="image/deks-logo-transparent.png" rel="icon">
+
+    <!-- Polices : Geist, Geist Mono, Instrument Serif (chargement non bloquant) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+
+    <!-- Feuille de style unique -->
     <link href="css/deks.css" rel="stylesheet">
 </head>
+<body id="top">
+    <a class="dn-skip" href="#contenu">Aller au contenu</a>
 
-<body>
-    <div class="container-xxl bg-white p-0">
-        <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="index.html" class="navbar-brand p-0">
-                    <img src="image/deks-logo-transparent.png" alt="Logo Deks" style="height: 60px;">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Accueil</a>
-                        <a href="about.html" class="nav-item nav-link">À propos</a>
-                        <a href="service.html" class="nav-item nav-link">Solutions</a>
-                    </div>
-                    <a href="#contactForm" class="btn deks-nav-cta ms-lg-3">Discutez du projet</a>
-                </div>
+    <header class="dn-nav">
+        <div class="dn-nav-inner">
+            <a href="index.html" class="dn-nav-brand">
+                <picture><source srcset="image/deks-logo-transparent.webp" type="image/webp"><img src="image/deks-logo-transparent.png" alt="Logo Deks" width="827" height="306"></picture>
+            </a>
+            <nav class="dn-nav-menu" id="dn-menu" aria-label="Navigation principale">
+                <ul class="dn-nav-links">
+                    <li><a class="dn-nav-link" href="index.html">Accueil</a></li><li><a class="dn-nav-link" href="about.html">À propos</a></li><li><a class="dn-nav-link" href="service.html">Solutions</a></li>
+                </ul>
+                <a href="contact.html" class="dn-nav-cta">Discutez du projet<svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </nav>
-            <button class="deks-mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Ouvrir le menu"></button>
-
-            <div class="container-xxl py-5 bg-primary hero-header deks-page-hero mb-5">
-                <div class="container px-lg-5">
-                    <div class="row g-4">
-                        <div class="col-12 text-center">
-                            <h1 class="text-white animated zoomIn">Parlez-nous de votre projet logiciel</h1>
-                            <p class="mx-auto">Remplissez le formulaire. Nous préparons votre message WhatsApp avec les informations du projet.</p>
-                            <hr class="bg-white mx-auto mt-4" style="width: 90px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button class="dn-menu-btn" type="button" aria-expanded="false" aria-controls="dn-menu" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="dn-l1" d="M4 9h16"/><path class="dn-l2" d="M4 15h16"/></svg></button>
         </div>
+    </header>
 
-        <div class="container-xxl py-5">
-            <div class="container px-lg-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-title position-relative text-center mb-5 pb-2">
-                            <h6 class="position-relative d-inline text-primary ps-4">Discutez du projet</h6>
-                            <h2 class="mt-2">Décrivez le besoin. Nous continuons sur WhatsApp.</h2>
-                        </div>
-                        <div>
-                            <form id="contactForm" novalidate>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
-                                            <label for="name">Nom</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Votre email professionnel" required>
-                                            <label for="email">Email professionnel</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="subject" name="subject" placeholder="Type de solution" required>
-                                            <label for="subject">Type de projet</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" id="message" name="message" placeholder="Décrivez votre besoin" style="height: 160px" required></textarea>
-                                            <label for="message">Votre besoin</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary w-100 py-3" type="submit">Soumettre</button>
-                                    </div>
-                                </div>
-                                <div class="deks-form-status" id="contactFormStatus" role="status" aria-live="polite"></div>
-                            </form>
-                        </div>
-                    </div>
+    <main id="contenu">
+<section class="dn-page-hero dn-dark">
+<div class="dn-container">
+<p class="dn-label">Contact</p>
+<h1>Parlez-nous de <em class="dn-serif">votre projet</em>.</h1>
+<p class="dn-intro">Remplissez le formulaire : nous préparons votre message WhatsApp avec les informations du projet. Vous pouvez aussi nous écrire directement.</p>
+</div>
+</section>
+<section class="dn-section">
+<div class="dn-container dn-g12 dn-contact">
+<div class="dn-reveal">
+<h2 class="dn-block-title">Décrivez votre <em class="dn-serif">besoin</em></h2>
+<p>Nous continuons la discussion sur WhatsApp.</p>
+<form id="contactForm" class="dn-form" novalidate>
+<div class="dn-fields">
+<div class="dn-field"><label class="dn-tag" for="name">Nom</label><input type="text" id="name" name="name" placeholder="Votre nom" autocomplete="name" required></div>
+<div class="dn-field"><label class="dn-tag" for="email">E-mail professionnel</label><input type="email" id="email" name="email" placeholder="Votre e-mail professionnel" autocomplete="email" required></div>
+<div class="dn-field dn-field-full"><label class="dn-tag" for="subject">Type de projet</label><input type="text" id="subject" name="subject" placeholder="Type de projet" required></div>
+<div class="dn-field dn-field-full"><label class="dn-tag" for="message">Votre besoin</label><textarea id="message" name="message" placeholder="Décrivez votre besoin" required></textarea></div>
+</div>
+<button class="dn-btn dn-btn-wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Préparer mon message WhatsApp</button>
+<div class="deks-form-status" id="contactFormStatus" role="status" aria-live="polite"></div>
+</form>
+</div>
+<aside class="dn-contact-aside dn-reveal" aria-labelledby="contact-direct">
+<h2 class="dn-block-title" id="contact-direct">Contact <em class="dn-serif">direct</em></h2>
+<p>Pour une question rapide, écrivez-nous directement.</p>
+<ul class="dn-contact-list"><li><span class="dn-tag">WhatsApp</span><a href="https://wa.me/2290194776256" target="_blank" rel="noopener">+229 01 94 77 62 56</a></li><li><span class="dn-tag">E-mail</span><a href="mailto:deksinformatique@gmail.com">deksinformatique@gmail.com</a></li></ul>
+<div class="dn-actions"><a class="dn-btn dn-btn-wa" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20parler%20de%20mon%20projet." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Écrire sur WhatsApp</a></div>
+</aside>
+</div>
+</section>
+    </main>
+
+    <footer class="dn-footer">
+        <div class="dn-container">
+            <div class="dn-g12 dn-footer-grid">
+                <div class="dn-footer-about">
+                    <p class="dn-footer-brand">Deks Nexa</p>
+                    <p>Le digital qui fait avancer votre entreprise : logiciels métiers, automatisations, applications et plateformes sur mesure.</p>
+                </div>
+                <nav class="dn-footer-nav" aria-label="Pied de page">
+                    <p class="dn-tag dn-footer-title">Navigation</p>
+                    <ul><li><a href="index.html">Accueil</a></li><li><a href="service.html">Solutions</a></li><li><a href="projets.html">Réalisations</a></li><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li></ul>
+                </nav>
+                <div class="dn-footer-contact">
+                    <p class="dn-tag dn-footer-title">Contact</p>
+                    <ul><li><a href="https://wa.me/2290194776256" target="_blank" rel="noopener">WhatsApp : +229 01 94 77 62 56</a></li><li><a href="mailto:deksinformatique@gmail.com">deksinformatique@gmail.com</a></li></ul>
+                </div>
+                <div class="dn-footer-social">
+                    <p class="dn-tag dn-footer-title">Réseaux</p>
+                    <ul><li><a href="https://www.facebook.com/deksnexa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a></li><li><a href="https://www.instagram.com/deksnexa/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/></svg>Instagram</a></li></ul>
                 </div>
             </div>
+            <div class="dn-footer-bottom"><span>© Deks Nexa. Tous droits réservés.</span></div>
         </div>
+    </footer>
 
-        <div class="container-fluid bg-primary text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5 px-lg-5">
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-4">
-                        <h5 class="text-white mb-4">Nous joindre</h5>
-                        <p><i class="fa fa-map-marker-alt me-3"></i>Bénin, Abomey-Calavi</p>
-                        <p><i class="fa fa-phone-alt me-3"></i>+229 94776256</p>
-                        <p><i class="fa fa-envelope me-3"></i>deksinformatique@gmail.com</p>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <h5 class="text-white mb-4">Liens</h5>
-                        <a class="btn btn-link" href="about.html">À propos</a>
-                        <a class="btn btn-link" href="service.html">Solutions</a>
-                        <a class="btn btn-link" href="contact.html">Discutez du projet</a>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <h5 class="text-white mb-4">DEKS</h5>
-                        <p>DEKS développe des logiciels professionnels pour aider les entreprises à gagner du temps, mieux collaborer et piloter leur croissance.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-lg-5">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="index.html">DEKS</a>, Tous droits réservés.
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="index.html">Accueil</a>
-                                <a href="service.html">Solutions</a>
-                                <a href="contact.html">Discutez du projet</a>
-                                <a href="about.html">Entreprise</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
+    <a class="dn-top" href="#top" aria-label="Revenir en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a>
     <script>
         document.getElementById('contactForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -168,7 +122,7 @@
             const message = document.getElementById('message').value.trim();
 
             const whatsappMessage = [
-                'Bonjour DEKS, je souhaite discuter d’un projet logiciel.',
+                'Bonjour Deks Nexa, je souhaite discuter d’un projet logiciel.',
                 '',
                 `Nom : ${name}`,
                 `Email : ${email}`,
@@ -183,20 +137,12 @@
             }
 
             window.setTimeout(function () {
-                window.location.href = `https://wa.me/22994776256?text=${encodeURIComponent(whatsappMessage)}`;
+                window.location.href = `https://wa.me/2290194776256?text=${encodeURIComponent(whatsappMessage)}`;
             }, 450);
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="script.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/deks-ui.js" defer></script>
 </body>
 
 </html>

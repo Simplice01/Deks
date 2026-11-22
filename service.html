@@ -1,299 +1,176 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="utf-8">
-    <title>DEKS - Solutions logicielles</title>
+    <title>Deks Nexa - Solutions logicielles</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="logiciel métier, ERP, CRM, automatisation, intégration API, application mobile, plateforme SaaS, maintenance" name="keywords">
+    <meta content="Logiciels métiers, automatisations, intégrations, applications mobiles et plateformes en ligne, pensés pour les opérations réelles de votre entreprise." name="description">
+    <meta name="theme-color" content="#0A0A0A">
+    <script>document.documentElement.classList.add("js");</script>
 
     <!-- Favicon -->
     <link href="image/deks-logo-transparent.png" rel="icon">
 
-    <!-- Google Web Fonts -->
+    <!-- Polices : Geist, Geist Mono, Instrument Serif (chargement non bloquant) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css1/style.css" rel="stylesheet">
+    <!-- Feuille de style unique -->
     <link href="css/deks.css" rel="stylesheet">
 </head>
+<body id="top">
+    <a class="dn-skip" href="#contenu">Aller au contenu</a>
 
-<body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
-        <!-- Spinner End -->
-
-
-        <!-- Navbar & Hero Start -->
-        <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="index.html" class="navbar-brand p-0">
-                    <img src="image/deks-logo-transparent.png" alt="Logo Deks" style="height: 60px;">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link ">Accueil</a>
-                        <a href="about.html" class="nav-item nav-link">À propos</a>
-                        <a href="service.html" class="nav-item nav-link active">Solutions</a>
-                    </div>
-                    <a href="contact.html" class="btn deks-nav-cta ms-lg-3">Discutez du projet</a>
-                </div>
+    <header class="dn-nav">
+        <div class="dn-nav-inner">
+            <a href="index.html" class="dn-nav-brand">
+                <picture><source srcset="image/deks-logo-transparent.webp" type="image/webp"><img src="image/deks-logo-transparent.png" alt="Logo Deks" width="827" height="306"></picture>
+            </a>
+            <nav class="dn-nav-menu" id="dn-menu" aria-label="Navigation principale">
+                <ul class="dn-nav-links">
+                    <li><a class="dn-nav-link" href="index.html">Accueil</a></li><li><a class="dn-nav-link" href="about.html">À propos</a></li><li><a class="dn-nav-link is-active" href="service.html" aria-current="page">Solutions</a></li>
+                </ul>
+                <a href="contact.html" class="dn-nav-cta">Discutez du projet<svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </nav>
-            <button class="deks-mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Ouvrir le menu"></button>
+            <button class="dn-menu-btn" type="button" aria-expanded="false" aria-controls="dn-menu" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="dn-l1" d="M4 9h16"/><path class="dn-l2" d="M4 15h16"/></svg></button>
+        </div>
+    </header>
 
-            <div class="container-xxl py-5 bg-primary hero-header deks-page-hero mb-5">
-                <div class="container px-lg-5">
-                    <div class="row g-4">
-                        <div class="col-12 text-center">
-                            <h1 class="text-white animated zoomIn">Solutions</h1>
-                            <p class="mx-auto mb-0">Applications métiers, ERP, CRM, plateformes SaaS, dashboards et automatisations conçus pour les opérations réelles de votre entreprise.</p>
-                            <hr class="bg-white mx-auto mt-4" style="width: 90px;">
-                        </div>
-                    </div>
+    <main id="contenu">
+<section class="dn-page-hero dn-dark">
+<div class="dn-container">
+<p class="dn-label">Solutions</p>
+<h1>Des logiciels conçus pour <em class="dn-serif">vos métiers</em>.</h1>
+<p class="dn-intro">Logiciels métiers, automatisations, intégrations, applications mobiles et plateformes en ligne, pensés pour les opérations réelles de votre entreprise.</p>
+<div class="dn-actions"><a class="dn-btn dn-btn-wa" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20parler%20de%20mon%20projet." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Parler de votre projet</a></div>
+</div>
+</section>
+<section class="dn-section" id="solutions">
+<div class="dn-container">
+<div class="dn-head dn-reveal">
+<p class="dn-label">6 solutions</p>
+<h2 class="dn-title">Choisissez le besoin qui vous <em class="dn-serif">ressemble</em>.</h2>
+<p class="dn-intro">Chaque solution part d'un problème concret et aboutit à un outil simple à utiliser.</p>
+</div>
+<ol class="dn-offers">
+<li class="dn-offer dn-g12 dn-reveal" id="logiciel-metier">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">01</span><p class="dn-tag">Site web moderne · Logiciel métier · ERP &amp; CRM</p></div>
+<div class="dn-offer-main">
+<h3>Tout centraliser et piloter dans un seul outil.</h3>
+<p class="dn-offer-problem">Nos clients, commandes et stocks sont éparpillés dans plusieurs fichiers.</p>
+<p>Nous réunissons vos clients, ventes, stocks, factures et validations dans un logiciel clair, pensé pour votre métier, avec des tableaux de bord pour suivre l'activité.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Site web moderne pour présenter votre activité</li><li>Gestion des clients, des ventes et de la facturation</li><li>Suivi des stocks et des opérations</li><li>Demandes et validations avec traçabilité</li><li>Tableaux de bord et indicateurs clés</li><li>Accès sécurisés selon les rôles</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20centraliser%20mes%20clients%2C%20commandes%20et%20stocks%20dans%20un%20seul%20outil." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+<li class="dn-offer dn-g12 dn-reveal" id="automatisation">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">02</span><p class="dn-tag">Automatisation</p></div>
+<div class="dn-offer-main">
+<h3>Automatiser validations, relances et notifications.</h3>
+<p class="dn-offer-problem">Les validations et les relances se perdent dans les messages.</p>
+<p>Nous connectons les étapes clés de votre activité pour que chaque demande suive un circuit clair, sans tâches répétitives.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Relances automatiques</li><li>Notifications internes</li><li>Validation et affectation des demandes</li><li>Génération de documents et de factures</li><li>Suivi des actions en temps réel</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20automatiser%20des%20validations%2C%20relances%20ou%20notifications." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+<li class="dn-offer dn-g12 dn-reveal" id="integration-api">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">03</span><p class="dn-tag">Intégration API</p></div>
+<div class="dn-offer-main">
+<h3>Connecter vos outils entre eux.</h3>
+<p class="dn-offer-problem">Nous saisissons les mêmes informations dans plusieurs outils.</p>
+<p>Nous faisons circuler les données entre vos logiciels, vos paiements et vos services externes : une seule saisie, partout à jour.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Connexion aux solutions de paiement</li><li>Synchronisation entre applications</li><li>APIs REST pour vos services</li><li>Automatisation des échanges de données</li><li>Supervision et maintenance des intégrations</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20connecter%20mes%20outils%20pour%20%C3%A9viter%20la%20double%20saisie." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+<li class="dn-offer dn-g12 dn-reveal" id="application-mobile">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">04</span><p class="dn-tag">Application mobile</p></div>
+<div class="dn-offer-main">
+<h3>Une application mobile pour le terrain.</h3>
+<p class="dn-offer-problem">Nos équipes terrain remontent les informations sur papier ou par téléphone.</p>
+<p>Nous créons des applications Android et iOS connectées à vos données, simples à prendre en main pour les équipes terrain.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Collecte de données sur le terrain</li><li>Notifications et alertes métier</li><li>Synchronisation avec le système central</li><li>Accès sécurisé par profil</li><li>Écrans simples pour les équipes</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20une%20application%20mobile%20pour%20mes%20%C3%A9quipes%20terrain." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+<li class="dn-offer dn-g12 dn-reveal" id="plateforme-saas">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">05</span><p class="dn-tag">Plateforme SaaS</p></div>
+<div class="dn-offer-main">
+<h3>Lancer votre plateforme en ligne.</h3>
+<p class="dn-offer-problem">Nous voulons proposer notre service en ligne, avec des comptes clients.</p>
+<p>Nous développons des plateformes prêtes à accueillir vos utilisateurs, vos abonnements et vos processus métier.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Comptes et rôles utilisateurs</li><li>Espaces clients et administration</li><li>Abonnements ou paiements intégrés</li><li>Suivi des usages et indicateurs</li><li>Architecture pensée pour évoluer</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20lancer%20une%20plateforme%20en%20ligne." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+<li class="dn-offer dn-g12 dn-reveal" id="maintenance">
+<div class="dn-offer-side"><span class="dn-offer-num" aria-hidden="true">06</span><p class="dn-tag">Maintenance</p></div>
+<div class="dn-offer-main">
+<h3>Moderniser sans tout recommencer.</h3>
+<p class="dn-offer-problem">Notre outil actuel est lent, fragile ou dépassé.</p>
+<p>Nous reprenons l'outil que vos équipes utilisent déjà pour le rendre plus stable, plus clair et plus sûr, étape par étape.</p>
+</div>
+<div class="dn-offer-aside">
+<ul class="dn-checks"><li>Audit de l'existant</li><li>Corrections et stabilisation</li><li>Améliorations progressives</li><li>Sécurisation des accès et des données</li><li>Maintenance et évolutions continues</li></ul>
+<a class="dn-link" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20moderniser%20une%20application%20existante." target="_blank" rel="noopener">Parler de ce besoin <svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</li>
+</ol>
+</div>
+</section>
+<section class="dn-section dn-dark dn-cta" id="contact">
+<div class="dn-container dn-reveal">
+<p class="dn-label">Contact</p>
+<h2 class="dn-cta-title">Parlons de <em class="dn-serif">votre projet</em>.</h2>
+<p class="dn-intro">Expliquez-nous votre besoin en quelques mots. Nous vous répondons sur WhatsApp.</p>
+<div class="dn-actions"><a class="dn-btn dn-btn-wa" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20parler%20de%20mon%20projet." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Parler de votre projet</a><a class="dn-btn dn-btn-outline" href="contact.html">Remplir le formulaire<svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+<p class="dn-cta-note">Réponse sur WhatsApp, en général dans la journée</p>
+</div>
+</section>
+    </main>
+
+    <footer class="dn-footer">
+        <div class="dn-container">
+            <div class="dn-g12 dn-footer-grid">
+                <div class="dn-footer-about">
+                    <p class="dn-footer-brand">Deks Nexa</p>
+                    <p>Le digital qui fait avancer votre entreprise : logiciels métiers, automatisations, applications et plateformes sur mesure.</p>
+                </div>
+                <nav class="dn-footer-nav" aria-label="Pied de page">
+                    <p class="dn-tag dn-footer-title">Navigation</p>
+                    <ul><li><a href="index.html">Accueil</a></li><li><a href="service.html">Solutions</a></li><li><a href="projets.html">Réalisations</a></li><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li></ul>
+                </nav>
+                <div class="dn-footer-contact">
+                    <p class="dn-tag dn-footer-title">Contact</p>
+                    <ul><li><a href="https://wa.me/2290194776256" target="_blank" rel="noopener">WhatsApp : +229 01 94 77 62 56</a></li><li><a href="mailto:deksinformatique@gmail.com">deksinformatique@gmail.com</a></li></ul>
+                </div>
+                <div class="dn-footer-social">
+                    <p class="dn-tag dn-footer-title">Réseaux</p>
+                    <ul><li><a href="https://www.facebook.com/deksnexa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a></li><li><a href="https://www.instagram.com/deksnexa/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/></svg>Instagram</a></li></ul>
                 </div>
             </div>
+            <div class="dn-footer-bottom"><span>© Deks Nexa. Tous droits réservés.</span></div>
         </div>
-        <!-- Navbar & Hero End -->
+    </footer>
 
-
-        <!-- Full Screen Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center justify-content-center">
-                        <div class="input-group" style="max-width: 600px;">
-                            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword">
-                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Full Screen Search End -->
-
-
-        <!-- Service Start -->
-
- <!-- SECTION SERVICES -->
-
- <section class="services-section">
-    <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
-        <h6 class="position-relative d-inline text-primary ps-4">Solutions</h6>
-        <h2 class="mt-2">Des logiciels conçus pour vos métiers</h2>
-    </div>
-    <div class="services-grid">
-      
-      <!-- Service 1 -->
-      <div class="service-card" onclick="openModal('web')">
-        <div class="service-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(1, 2, 1, 1);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm7.931 9h-2.764a14.67 14.67 0 0 0-1.792-6.243A8.013 8.013 0 0 1 19.931 11zM12.53 4.027c1.035 1.364 2.427 3.78 2.627 6.973H9.03c.139-2.596.994-5.028 2.451-6.974.172-.01.344-.026.519-.026.179 0 .354.016.53.027zm-3.842.7C7.704 6.618 7.136 8.762 7.03 11H4.069a8.013 8.013 0 0 1 4.619-6.273zM4.069 13h2.974c.136 2.379.665 4.478 1.556 6.23A8.01 8.01 0 0 1 4.069 13zm7.381 6.973C10.049 18.275 9.222 15.896 9.041 13h6.113c-.208 2.773-1.117 5.196-2.603 6.972-.182.012-.364.028-.551.028-.186 0-.367-.016-.55-.027zm4.011-.772c.955-1.794 1.538-3.901 1.691-6.201h2.778a8.005 8.005 0 0 1-4.469 6.201z"></path></svg>                 </div>
-        <h3 class="service-name">Applications métiers</h3>
-        <p class="service-desc">Outils internes sur mesure pour gérer vos demandes, validations, clients, équipes et opérations quotidiennes.</p>
-        <button  onclick="openModal('web')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-  
-      <!-- Service 2 -->
-      <div class="service-card" onclick="openModal('mobile')">
-        <div class="service-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(1, 2, 1, 1);"><path d="M16.75 2h-10c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm-10 18V4h10l.002 16H6.75z"></path><circle cx="11.75" cy="18" r="1"></circle></svg>                 </div>
-        <h3 class="service-name">Applications mobiles métier</h3>
-        <p class="service-desc">Applications Android/iOS connectées à vos données pour permettre aux équipes terrain de travailler plus vite.</p>
-        <button  onclick="openModal('mobile')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-  
-      <!-- Service 3 -->
-      <div class="service-card" onclick="openModal('software')">
-        <div class="service-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(1, 2, 1, 1);"><path d="M20 3H4c-1.103 0-2 .897-2 2v11c0 1.103.897 2 2 2h7v2H8v2h8v-2h-3v-2h7c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM4 14V5h16l.002 9H4z"></path></svg>
-                        </div>
-        <h3 class="service-name">ERP & CRM</h3>
-        <p class="service-desc">Gestion clients, ventes, stock, facturation et suivi d'activité dans un système clair et centralisé.</p>
-        <button  onclick="openModal('software')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            width="44"
-            height="44"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#000000"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-        <path d="M20 17.5a4.5 4.5 0 0 0-1-8.9 6 6 0 0 0-11.6 1.8A4 4 0 0 0 6 17.5h14z"/>
-        <path d="M12 12v6"/>
-        <path d="M9 15l3-3 3 3"/>
-        </svg>
-
-        </div>
-        <h3 class="service-name">Plateformes SaaS</h3>
-        <p class="service-desc">Produits en ligne avec comptes utilisateurs, abonnements, espaces clients et exploitation continue.</p>
-        <button  onclick="openModal('saas')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            width="44"
-            height="44"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#000000"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a7.8 7.8 0 0 0 .1-2l2-1.5-2-3.5-2.4.5a7.8 7.8 0 0 0-1.7-1L13.5 3h-3l-.9 2.5a7.8 7.8 0 0 0-1.7 1L5.5 6l-2 3.5 2 1.5a7.8 7.8 0 0 0 0 2L3.5 14.5l2 3.5 2.4-.5a7.8 7.8 0 0 0 1.7 1L10.5 21h3l.9-2.5a7.8 7.8 0 0 0 1.7-1l2.4.5 2-3.5-2-1.5z"/>
-        </svg>
-                         </div>
-         <h3 class="service-name">Automatisation des processus</h3>
-         <p class="service-desc">Relances, notifications, factures, validations et workflows pour réduire les tâches répétitives.</p>
-        <button  onclick="openModal('automation')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            width="44"
-            height="44"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#000000"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round">
-        <rect x="3" y="7" width="7" height="10" rx="2"/>
-        <rect x="14" y="7" width="7" height="10" rx="2"/>
-        <path d="M10 12h4"/>
-        <path d="M12 9v6"/>
-        </svg>
-                        </div>
-        <h3 class="service-name">Intégrations API</h3>
-        <p class="service-desc">Connexion entre vos outils, paiements, bases de données et services externes pour fluidifier vos opérations.</p>
-        <button  onclick="openModal('api')" class="service-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgb(249, 247, 247);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg></button>
-      </div>
-  
-    </div>
-
-    <div id="serviceModal" class="modal">
-        <div class="modal-content">
-          <span class="close-modal" onclick="closeModal()">&times;</span>
-          <div id="modalDetails"></div>
-          <a class="modal-btn" href="contact.html">Discutez du projet</a>
-        </div>
-      </div>
-
-  </section>
-  
-          
-        
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-primary text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5 px-lg-5">
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Nous joindre</h5>
-                        <p><i class="fa fa-map-marker-alt me-3"></i>Bénin, Abomey-Calavi</p>
-                        <p><i class="fa fa-phone-alt me-3"></i>+229 94776256</p>
-                        <p><i class="fa fa-envelope me-3"></i>deksinformatique@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href="https://x.com/DKinhoue?s=09"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/profile.php?id=61558247646451"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/kdsman_?igsh=cWwxc2w4OWxmZ3hv"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/in/simplice-kinhoue-5a4b7327a"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Liens</h5>
-                        <a class="btn btn-link" href="about.html">À propos</a>
-                        <a class="btn btn-link" href="service.html">Solutions</a>
-                        <a class="btn btn-link" href="contact.html">Discutez du projet</a>
-                        <a class="btn btn-link" href="index.html">Entreprise</a>
-                        <a class="btn btn-link" href="index.html">Automatisation</a>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Deks</h5>
-                        <p>DEKS développe des logiciels professionnels pour aider les entreprises à gagner du temps, mieux collaborer et piloter leur croissance. </p>
-                        <a href="contact.html" class="btn btn-light rounded-pill py-3 px-4 mt-3">Discutez du projet</a>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-lg-5">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">DEKS</a>, Tous droits réservés. 
-							
-							Réalisé par <a class="border-bottom" href="index.html">DEKS</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="index.html">Accueil</a>
-                                <a href="service.html">Solutions</a>
-                                <a href="contact.html">Discutez du projet</a>
-                                <a href="about.html">Entreprise</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="script.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-
-    
+    <a class="dn-top" href="#top" aria-label="Revenir en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a>
+    <script src="js/main.js" defer></script>
+    <script src="js/deks-ui.js" defer></script>
 </body>
 
 </html>
-
-

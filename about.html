@@ -1,270 +1,135 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="utf-8">
-    <title>DEKS - À propos</title>
+    <title>Deks Nexa - À propos</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="Deks Nexa conçoit des logiciels professionnels sur mesure : logiciels métiers, automatisations, applications mobiles et plateformes en ligne." name="description">
+    <meta name="theme-color" content="#0A0A0A">
+    <script>document.documentElement.classList.add("js");</script>
 
     <!-- Favicon -->
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/deks.css" rel="stylesheet">
     <link href="image/deks-logo-transparent.png" rel="icon">
 
+    <!-- Polices : Geist, Geist Mono, Instrument Serif (chargement non bloquant) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+
+    <!-- Feuille de style unique -->
+    <link href="css/deks.css" rel="stylesheet">
 </head>
+<body id="top">
+    <a class="dn-skip" href="#contenu">Aller au contenu</a>
 
-<body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
-        <!-- Spinner End -->
-
-
-        <!-- Navbar & Hero Start -->
-        <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="index.html" class="navbar-brand p-0">
-                    <img src="image/deks-logo-transparent.png" alt="Logo Deks" style="height: 60px;">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Accueil</a>
-                        <a href="about.html" class="nav-item nav-link active">À propos</a>
-                        <a href="service.html" class="nav-item nav-link">Solutions</a>
-                   </div>
-                   <a href="contact.html" class="btn deks-nav-cta ms-lg-3">Discutez du projet</a>
-                </div>
+    <header class="dn-nav">
+        <div class="dn-nav-inner">
+            <a href="index.html" class="dn-nav-brand">
+                <picture><source srcset="image/deks-logo-transparent.webp" type="image/webp"><img src="image/deks-logo-transparent.png" alt="Logo Deks" width="827" height="306"></picture>
+            </a>
+            <nav class="dn-nav-menu" id="dn-menu" aria-label="Navigation principale">
+                <ul class="dn-nav-links">
+                    <li><a class="dn-nav-link" href="index.html">Accueil</a></li><li><a class="dn-nav-link is-active" href="about.html" aria-current="page">À propos</a></li><li><a class="dn-nav-link" href="service.html">Solutions</a></li>
+                </ul>
+                <a href="contact.html" class="dn-nav-cta">Discutez du projet<svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </nav>
-            <button class="deks-mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Ouvrir le menu"></button>
-
-            <div class="container-xxl py-5 bg-primary hero-header deks-page-hero mb-5">
-                <div class="container px-lg-5">
-                    <div class="row g-4">
-                        <div class="col-12 text-center">
-                            <h1 class="text-white animated zoomIn">À propos</h1>
-                            <p class="mx-auto mb-0">DEKS conçoit des logiciels professionnels pour aider les organisations à structurer leurs opérations, automatiser leurs processus et mieux piloter leur croissance.</p>
-                            <hr class="bg-white mx-auto mt-4" style="width: 90px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button class="dn-menu-btn" type="button" aria-expanded="false" aria-controls="dn-menu" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="dn-l1" d="M4 9h16"/><path class="dn-l2" d="M4 15h16"/></svg></button>
         </div>
-        <!-- Navbar & Hero End -->
+    </header>
 
+    <main id="contenu">
+<section class="dn-page-hero dn-dark">
+<div class="dn-container">
+<p class="dn-label">À propos</p>
+<h1>Le digital qui fait <em class="dn-serif">avancer</em> votre entreprise.</h1>
+<p class="dn-intro">Deks Nexa conçoit des logiciels professionnels pour aider les organisations à structurer leurs opérations, automatiser leurs processus et mieux piloter leur activité.</p>
+<div class="dn-actions"><a class="dn-btn dn-btn-wa" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20parler%20de%20mon%20projet." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Parler de votre projet</a></div>
+</div>
+</section>
+<section class="dn-section">
+<div class="dn-container dn-g12 dn-split">
+<div class="dn-head dn-reveal">
+<p class="dn-label">Qui nous sommes</p>
+<h2 class="dn-title">Des solutions <em class="dn-serif">utiles</em>, pas des outils décoratifs.</h2>
+</div>
+<div class="dn-prose dn-reveal">
+<p><strong>Nous partons du métier avant la technologie.</strong> Chaque projet commence par la compréhension de vos processus, de vos contraintes et des résultats attendus. Le logiciel vient ensuite comme une réponse structurée.</p>
+<p>Nous accompagnons les entreprises qui veulent gagner du temps, mieux piloter leur activité et réduire la dépendance aux fichiers dispersés, aux tâches manuelles et aux outils mal connectés.</p>
+<p><strong>Deks Nexa est un partenaire technique sur le long terme.</strong> Nous concevons, livrons, maintenons et améliorons les solutions pour qu'elles restent fiables quand votre organisation évolue.</p>
+</div>
+</div>
+</section>
+<section class="dn-section dn-dark">
+<div class="dn-container">
+<div class="dn-head dn-reveal">
+<p class="dn-label">Pourquoi Deks Nexa</p>
+<h2 class="dn-title">Quatre engagements pour des logiciels qui <em class="dn-serif">durent</em>.</h2>
+</div>
+<ul class="dn-features">
+<li class="dn-feature dn-reveal"><h3>Sur mesure</h3><p>Chaque outil part de vos processus réels, pas d'un modèle tout fait.</p></li>
+<li class="dn-feature dn-reveal"><h3>IA intégrée</h3><p>L'intelligence artificielle là où elle fait vraiment gagner du temps.</p></li>
+<li class="dn-feature dn-reveal"><h3>Simple à utiliser</h3><p>Des écrans clairs, pensés pour que vos équipes l'adoptent vite.</p></li>
+<li class="dn-feature dn-reveal"><h3>Accompagnement</h3><p>Mise en service, prise en main, maintenance et évolutions.</p></li>
+</ul>
+</div>
+</section>
+<section class="dn-section" id="methode">
+<div class="dn-container">
+<div class="dn-head dn-reveal">
+<p class="dn-label">Méthode</p>
+<h2 class="dn-title">Une méthode <em class="dn-serif">simple</em>, du besoin au logiciel en service.</h2>
+<p class="dn-intro">Quatre étapes claires, avec vous à chaque moment du projet.</p>
+</div>
+<ol class="dn-steps dn-reveal">
+<li class="dn-step"><span class="dn-step-dot" aria-hidden="true"></span><span class="dn-step-num">01</span><h3>Écouter</h3><p>Nous clarifions vos processus, vos contraintes et vos priorités.</p></li>
+<li class="dn-step"><span class="dn-step-dot" aria-hidden="true"></span><span class="dn-step-num">02</span><h3>Proposer</h3><p>Une solution claire, découpée en étapes, avec un devis détaillé.</p></li>
+<li class="dn-step"><span class="dn-step-dot" aria-hidden="true"></span><span class="dn-step-num">03</span><h3>Construire</h3><p>Nous développons par étapes et vous montrons l'avancement régulièrement.</p></li>
+<li class="dn-step"><span class="dn-step-dot" aria-hidden="true"></span><span class="dn-step-num">04</span><h3>Livrer et suivre</h3><p>Mise en service, prise en main par vos équipes, maintenance et évolutions.</p></li>
+</ol>
+</div>
+</section>
+<section class="dn-section dn-dark dn-cta" id="contact">
+<div class="dn-container dn-reveal">
+<p class="dn-label">Contact</p>
+<h2 class="dn-cta-title">Parlons de <em class="dn-serif">votre projet</em>.</h2>
+<p class="dn-intro">Expliquez-nous votre besoin en quelques mots. Nous vous répondons sur WhatsApp.</p>
+<div class="dn-actions"><a class="dn-btn dn-btn-wa" href="https://wa.me/2290194776256?text=Bonjour%20Deks%20Nexa%2C%20je%20souhaite%20parler%20de%20mon%20projet." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>Parler de votre projet</a><a class="dn-btn dn-btn-outline" href="contact.html">Remplir le formulaire<svg class="dn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+<p class="dn-cta-note">Réponse sur WhatsApp, en général dans la journée</p>
+</div>
+</section>
+    </main>
 
-        <!-- Full Screen Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center justify-content-center">
-                        <div class="input-group" style="max-width: 600px;">
-                            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword">
-                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
+    <footer class="dn-footer">
+        <div class="dn-container">
+            <div class="dn-g12 dn-footer-grid">
+                <div class="dn-footer-about">
+                    <p class="dn-footer-brand">Deks Nexa</p>
+                    <p>Le digital qui fait avancer votre entreprise : logiciels métiers, automatisations, applications et plateformes sur mesure.</p>
+                </div>
+                <nav class="dn-footer-nav" aria-label="Pied de page">
+                    <p class="dn-tag dn-footer-title">Navigation</p>
+                    <ul><li><a href="index.html">Accueil</a></li><li><a href="service.html">Solutions</a></li><li><a href="projets.html">Réalisations</a></li><li><a href="about.html">À propos</a></li><li><a href="contact.html">Contact</a></li></ul>
+                </nav>
+                <div class="dn-footer-contact">
+                    <p class="dn-tag dn-footer-title">Contact</p>
+                    <ul><li><a href="https://wa.me/2290194776256" target="_blank" rel="noopener">WhatsApp : +229 01 94 77 62 56</a></li><li><a href="mailto:deksinformatique@gmail.com">deksinformatique@gmail.com</a></li></ul>
+                </div>
+                <div class="dn-footer-social">
+                    <p class="dn-tag dn-footer-title">Réseaux</p>
+                    <ul><li><a href="https://www.facebook.com/deksnexa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>Facebook</a></li><li><a href="https://www.instagram.com/deksnexa/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/></svg>Instagram</a></li></ul>
                 </div>
             </div>
+            <div class="dn-footer-bottom"><span>© Deks Nexa. Tous droits réservés.</span></div>
         </div>
-        <!-- Full Screen Search End -->
+    </footer>
 
-
-        <!-- About Start -->
-        <div class="container-xxl py-5" >
-            <div class="container px-lg-5">
-                <div class="row g-5">
-                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="section-title position-relative mb-4 pb-2">
-                            <h6 class="position-relative text-primary ps-4">Depuis 2021</h6>
-                            <h2 class="mt-2">DEKS conçoit des logiciels professionnels pour les entreprises.</h2>
-                        </div>
-                        <p class="mb-4">Depuis 2021, DEKS aide les organisations à transformer leurs processus en systèmes logiciels fiables. Nous concevons des applications métiers, ERP, CRM, plateformes SaaS, APIs et dashboards pensés pour les opérations réelles des entreprises.</p>
-
-                        <div class="row g-3">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="deks-value-panel wow zoomIn" data-wow-delay="0.5s">
-                            <div>
-                                <span>01</span>
-                                <h5>Comprendre</h5>
-                                <p>Clarifier les processus, les rôles et les données importantes.</p>
-                            </div>
-                            <div>
-                                <span>02</span>
-                                <h5>Construire</h5>
-                                <p>Développer une solution fiable, claire et adaptée aux usages réels.</p>
-                            </div>
-                            <div>
-                                <span>03</span>
-                                <h5>Faire évoluer</h5>
-                                <p>Maintenir le logiciel et l'améliorer avec votre organisation.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div> 
-                        
-                    </div>
-
-                    <div class="col-lg-6 wow fadeInUp">
-                        <div class="section-title position-relative mb-4 pb-2">
-                            <h6 class="position-relative text-primary ps-4">Expertise</h6>
-                            <h2 class="mt-2">Des solutions utiles, pas des outils décoratifs.</h2>
-                        </div>
-                        <p class="mb-4"><strong>Applications métiers :</strong> Nous développons des outils internes pour gérer les demandes, validations, clients, équipes, stocks, factures et opérations quotidiennes.</p>
-
-                        <p class="mb-4"><strong>Applications mobiles métier :</strong> Nous créons des applications connectées à vos données pour permettre aux équipes terrain, clients ou partenaires de travailler plus rapidement.</p>
-                        
-                        <p class="mb-4"><strong>ERP, CRM et plateformes SaaS :</strong> Nous centralisons les données, les utilisateurs et les workflows dans des systèmes clairs, évolutifs et sécurisés.</p>
-                        
-                        <p class="mb-4"><strong>Automatisation et APIs :</strong> Nous connectons vos outils et automatisons les tâches répétitives pour réduire les erreurs, accélérer les décisions et améliorer la collaboration.</p>
-                        
-                        </div>
-
-                    <div>
-                        <div class="section-title position-relative mb-4 pb-2">
-                            <h6 class="position-relative text-primary ps-4">Pourquoi DEKS</h6>
-                            <h2 class="mt-2">Une approche sérieuse pour des logiciels qui durent.</h2>
-                        </div>
-                        <p class="mb-4"><strong>Nous partons du métier avant la technologie.</strong> Chaque projet commence par la compréhension de vos processus, de vos contraintes et des résultats attendus. Le logiciel vient ensuite comme une réponse structurée.</p>
-
-                        <p class="mb-4">Basés à <strong>Cotonou</strong>, nous accompagnons des entreprises qui veulent gagner du temps, mieux piloter leur activité et réduire la dépendance aux fichiers dispersés, aux tâches manuelles et aux outils mal connectés.</p>
-
-                        <p class="mb-4"><strong>DEKS est un partenaire technique long terme.</strong> Nous concevons, livrons, maintenons et améliorons les solutions pour qu’elles restent fiables quand votre organisation évolue.</p>
-
-                    </div>
-                    <div class="row g-3 m-3">
-                        <div class="col-sm-6">
-                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Solutions fiables</h6>
-                            <h6 class="mb-0"><i class="fa fa-check text-primary me-2"></i>Livrables professionnels</h6>
-                        </div>
-                        <div class="col-sm-6">
-                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Maintenance durable</h6>
-                            <h6 class="mb-0"><i class="fa fa-check text-primary me-2"></i>Équipe technique</h6>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mt-4 ml-1 m-3">
-                        <a class="btn btn-primary rounded-pill px-4 me-3" href="contact.html">Discutez du projet</a>
-                        <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-primary btn-square me-3" href=""><i class="fab fa-instagram"></i></a>
-                        <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-        <!-- About End -->
-
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-primary text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5 px-lg-5">
-                <div class="row g-5">
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Nous joindre</h5>
-                        <p><i class="fa fa-map-marker-alt me-3"></i>Bénin, Abomey-Calavi</p>
-                        <p><i class="fa fa-phone-alt me-3"></i>+229 94776256</p>
-                        <p><i class="fa fa-envelope me-3"></i>deksinformatique@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href="https://x.com/DKinhoue?s=09"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.facebook.com/profile.php?id=61558247646451"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.instagram.com/kdsman_?igsh=cWwxc2w4OWxmZ3hv"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-outline-light btn-social" href="https://www.linkedin.com/in/simplice-kinhoue-5a4b7327a"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Liens</h5>
-                        <a class="btn btn-link" href="about.html">À propos</a>
-                        <a class="btn btn-link" href="service.html">Solutions</a>
-                        <a class="btn btn-link" href="contact.html">Discutez du projet</a>
-                        <a class="btn btn-link" href="index.html">Entreprise</a>
-                        <a class="btn btn-link" href="index.html">Automatisation</a>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <h5 class="text-white mb-4">Deks</h5>
-                        <p>DEKS développe des logiciels professionnels pour aider les entreprises à gagner du temps, mieux collaborer et piloter leur croissance. </p>
-                        <a href="contact.html" class="btn btn-light rounded-pill py-3 px-4 mt-3">Discutez du projet</a>
-                    </div>
-                </div>
-            </div>
-            <div class="container px-lg-5">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">DEKS</a>, Tous droits réservés. 
-							
-							Réalisé par <a class="border-bottom" href="index.html">DEKS</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="index.html">Accueil</a>
-                                <a href="service.html">Solutions</a>
-                                <a href="contact.html">Discutez du projet</a>
-                                <a href="about.html">Entreprise</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="script.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <a class="dn-top" href="#top" aria-label="Revenir en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a>
+    <script src="js/main.js" defer></script>
+    <script src="js/deks-ui.js" defer></script>
 </body>
 
 </html>
-
-
-
-
