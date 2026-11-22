@@ -73,7 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           known_hosts="$RUNNER_TEMP/lws_known_hosts"
-          ssh-keyscan -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" 2>/dev/null > "$known_hosts"
+          ssh-keyscan -4 -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" 2>/dev/null > "$known_hosts"
           chmod 600 "$known_hosts"
           if ! ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | grep --fixed-strings --line-regexp --quiet "$LWS_HOST_FINGERPRINT"; then
             echo "LWS SSH host key did not match LWS_HOST_FINGERPRINT; connection refused." >&2
@@ -94,7 +94,7 @@ jobs:
           print("bye")
           PY
           SSHPASS="$LWS_PASSWORD" sshpass -e sftp -v -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
             -oPreferredAuthentications=password,keyboard-interactive \
             -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
             "$LWS_USERNAME@$LWS_HOST"
@@ -116,7 +116,7 @@ jobs:
           print("bye")
           PY
           SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
             -oPreferredAuthentications=password,keyboard-interactive \
             -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
             "$LWS_USERNAME@$LWS_HOST"
@@ -163,7 +163,7 @@ jobs:
           print("bye")
           PY
           SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
+            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
             -oPreferredAuthentications=password,keyboard-interactive \
             -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
             "$LWS_USERNAME@$LWS_HOST"
