@@ -93,7 +93,7 @@ jobs:
           print("ls index.html")
           print("bye")
           PY
-          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
+          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -v -b "$RUNNER_TEMP/lws_sftp_commands" \
             -P 22 -oBatchMode=no -oPubkeyAuthentication=no \
             -oPreferredAuthentications=password,keyboard-interactive \
             -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
