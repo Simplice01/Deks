@@ -73,8 +73,17 @@ jobs:
         run: |
           set -euo pipefail
           known_hosts="$RUNNER_TEMP/lws_known_hosts"
-          ssh-keyscan -4 -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" 2>/dev/null > "$known_hosts"
+          keyscan_errors="$RUNNER_TEMP/lws_keyscan_errors"
+          if ! ssh-keyscan -4 -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" > "$known_hosts" 2>"$keyscan_errors"; then
+            cat "$keyscan_errors" >&2
+            exit 1
+          fi
           chmod 600 "$known_hosts"
+          if [[ ! -s "$known_hosts" ]]; then
+            cat "$keyscan_errors" >&2
+            echo "No SSH host key was returned by the LWS server." >&2
+            exit 1
+          fi
           if ! ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | grep --fixed-strings --line-regexp --quiet "$LWS_HOST_FINGERPRINT"; then
             echo "Observed SSH host key fingerprints:"
             ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | sort -u
