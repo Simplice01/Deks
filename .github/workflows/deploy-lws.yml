@@ -68,6 +68,30 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends sshpass
 
+      - name: Confirm IPv4 SFTP port reachability
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, socket, sys
+
+          host = os.environ["LWS_HOST"]
+          try:
+              addresses = sorted({item[4][0] for item in socket.getaddrinfo(host, 22, socket.AF_INET, socket.SOCK_STREAM)})
+          except OSError:
+              print("LWS host did not resolve to an IPv4 address.", file=sys.stderr)
+              raise SystemExit(1)
+          for address in addresses:
+              try:
+                  with socket.create_connection((address, 22), timeout=8):
+                      print("IPv4 SFTP port 22 is reachable from this runner.")
+                      break
+              except OSError:
+                  continue
+          else:
+              print("IPv4 SFTP port 22 is not reachable from this runner.", file=sys.stderr)
+              raise SystemExit(1)
+          PY
+
       - name: Pin and verify the LWS SSH host key
         shell: bash
         run: |
