@@ -1,0 +1,116 @@
+# Chemins à supprimer sur le serveur LWS (autorisés par le propriétaire le 24/11/2026).
+# Sauvegarde locale : _backup_serveur_20261124 (sans .git ni .env.local, volontairement).
+.git
+.vercel
+.env.local
+README.md
+PROMPT_ACCUEIL_DEKS.md
+PROMPT_SITE_DEKS.md
+scss
+img/portfolio-2.jpg
+img/imagebk85.png
+img/portfolio-5.jpg
+img/bg-round.png
+img/footer.png
+img/testimonial-4.jpg
+img/png-clipart-computer-programming-software-developer-software-engineering-application-software-software-development-internet-computer-technology-silver-flat-screen-monitor-miscellaneous-computer.png
+img/simpliceimg.png
+img/testimonial-3.jpg
+img/imgbk02.png
+img/IMG-20240620-WA0002.jpg
+img/portfolio-4.jpg
+img/portfolio-3.jpg
+img/circuit-board.jpg
+img/team-1.jpg
+img/icon-shape-primary.png
+img/testimonial-2.jpg
+img/deksfist.png
+img/hero.png
+img/graphcolors.png
+img/team-2.jpg
+img/testimonial-1.jpg
+img/bg-bottom.png
+img/bg-top.png
+img/bg-tree.png
+img/bx-user.svg
+img/bg-dot.png
+img/about.jpg
+img/team-3.jpg
+img/portfolio-6.jpg
+img/bg-newsletter.png
+img/icon-shape-white.png
+img/portfolio-1.jpg
+img/bg-bottom-hero.png
+img/bsimpliceimg.png
+img/newsletter.png
+image/iconreseaufooter2.png
+image/log13.png
+image/affiche3.jpg
+image/imn.avif
+image/logo mm7.png
+image/projet3.png
+image/deks-logo.png
+image/bx-chevron-down.svg
+image/Logo_Deks1.png
+image/imgban1.jpg
+image/logo marque1.jpg
+image/imgbgestion-projet-informatique.jpg
+image/creation-site-740x447.jpg
+image/creation-application-mobile-et-vue-ordinateur-techtime.jpg
+image/imgbDeveloppement-Mobile-scaled.webp
+image/inffoo.webp
+image/log9.png
+image/log7.png
+image/logo mm6.png
+image/imgbConception-Web-Mobile-et-DevOps_agence_LKN_DESIGN.jpg
+image/project4.png
+image/imgbmedia-digitalisation-entreprise-processus.webp
+image/log-django.svg
+image/log12.png
+image/logo mm1.avif
+image/affiche2.jpg
+image/bx-chevron-right.svg
+image/logo mm3.jpg
+image/log1.png
+image/imk.avif
+image/log6.png
+image/iconreseaufooter3.webp
+image/imv.avif
+image/imbdeveloppeur-web.jpeg
+image/10-applications-mode-1.webp
+image/log5.png
+image/tic.png
+image/imgbbusiness-5475661-1920.webp
+image/log2.png
+image/logiciel.png
+image/logo mm5.png
+image/logo marque7.webp
+image/imgb-devenir-developpeur-application-mobile-LE.avif
+image/logo mm2.png
+image/imagelogomarq3.jpg
+image/téléchargement.jpg
+image/log-n8n.svg
+image/imgblogiciel-libre.jpg
+image/LogoDeks_.jpg
+image/log11.png
+image/affiche1.jpg
+image/definition-site-web-1.jpg
+image/imgbImportance-de-la-Digitalisation-pour-les-Entreprises.webp
+image/imgbqu-est-ce-que-le-graphisme-webmyay-2-1.webp
+image/Logo_Deks.png
+image/logo marque2.jpg
+image/log-flask.svg
+image/imgbb3ea36febdef6d8ea1a53f7b94199754_L.jpg
+image/imgbdevenir_designer_graphique.jpeg
+image/log3.png
+image/log4.png
+image/iml.jpg
+image/logo mm.jpg
+image/ccreation-site-061045.jpg
+image/deks-logo-on-light.png
+image/project1.png
+image/imgboutils-developpeurs-debutants.jpg
+image/logv.jpg
+image/logo mm4.png
+image/imagelogomarq5.jpg
+image/bx-menu.svg
