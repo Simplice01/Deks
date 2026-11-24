@@ -167,13 +167,19 @@ jobs:
               return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-          def url(*parts, directory=False):
-              segments = [s for s in REMOTE.split("/") if s]
+          # LWS_REMOTE_PATH is tried first as an absolute path, then relative to the FTP login directory.
+          PATH_MODE = {"absolute": True}
+
+
+          def url(*parts, directory=False, base=True):
+              segments = [s for s in REMOTE.split("/") if s] if base else []
               for part in parts:
                   segments.extend(s for s in part.split("/") if s)
-              # A leading %2F makes curl use an absolute path instead of one relative to the login directory.
-              path = "%2F" + "/".join(urllib.parse.quote(s, safe="") for s in segments)
-              return f"ftp://{TLS_NAME}:{PORT}/{path}" + ("/" if directory else "")
+              path = "/".join(urllib.parse.quote(s, safe="") for s in segments)
+              if PATH_MODE["absolute"] and base:
+                  # A leading %2F makes curl use an absolute path instead of one relative to the login directory.
+                  path = "%2F" + path
+              return f"ftp://{TLS_NAME}:{PORT}/{path}" + ("/" if directory and path else "")
 
 
           def curl(args, extra=(), max_time=180):
@@ -208,11 +214,24 @@ jobs:
               raise SystemExit(1)
 
 
+          def names_of(result):
+              return sorted({line.strip() for line in result.stdout.splitlines() if line.strip()})
+
+
           def list_remote():
               result = curl(["--list-only", url(directory=True)])
+              if result.returncode == 9 and PATH_MODE["absolute"]:
+                  print("The absolute remote path was refused; trying it relative to the FTP login directory.")
+                  PATH_MODE["absolute"] = False
+                  result = curl(["--list-only", url(directory=True)])
               if result.returncode:
+                  login = curl(["--list-only", url(directory=True, base=False)])
+                  if login.returncode == 0:
+                      print("Entries of the FTP login directory: " + ", ".join(names_of(login)[:40]))
                   fail(result, "Login and listing of the remote directory")
-              return sorted({line.strip() for line in result.stdout.splitlines() if line.strip()})
+              mode = "an absolute path" if PATH_MODE["absolute"] else "a path relative to the FTP login directory"
+              print(f"Remote directory reached as {mode}.")
+              return names_of(result)
 
 
           def check():
@@ -237,6 +256,7 @@ jobs:
               local = TMP / name
               content = f"DEKS NEXA LWS FTPS probe; run {run_id} attempt {attempt}\n"
               local.write_text(content)
+              list_remote()  # read-only: confirms login and resolves how the remote path is reached
 
               # Never overwrite: the unique name must not exist yet.
               before = curl(["--output", str(TMP / "probe_before"), url(name)])
@@ -277,6 +297,7 @@ jobs:
                   print("::error::Required production files are missing: " + ", ".join(missing))
                   raise SystemExit(1)
 
+              list_remote()  # read-only: confirms login and resolves how the remote path is reached
               extra = ["ftp-create-dirs"]
               for path in files:
                   extra.append("upload-file = " + quote((root / path).as_posix()))
