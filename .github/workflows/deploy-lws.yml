@@ -1,10 +1,11 @@
 name: Prepare or deploy DEKS NEXA to LWS
 
+# Manual only: no push, schedule or other automatic trigger.
 on:
   workflow_dispatch:
     inputs:
       operation:
-        description: "check: inspect the remote directory; probe: upload a unique hidden test file; deploy: upload the site files"
+        description: "check: verify TLS, login, remote directory and index.html (read-only); probe: upload one uniquely named test file (never overwrites); deploy: upload the site files"
         required: true
         type: choice
         options:
@@ -13,7 +14,7 @@ on:
           - deploy
         default: check
       confirm_production_overwrite:
-        description: "Required for deploy: authorize overwriting matching files in the live site directory"
+        description: "Required for deploy only: authorize overwriting matching files in the live site directory"
         required: true
         type: boolean
         default: false
@@ -27,7 +28,7 @@ concurrency:
 
 jobs:
   transfer:
-    name: LWS SFTP ${{ inputs.operation }}
+    name: LWS FTPS ${{ inputs.operation }}
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -36,7 +37,9 @@ jobs:
       LWS_USERNAME: ${{ secrets.LWS_USERNAME }}
       LWS_PASSWORD: ${{ secrets.LWS_PASSWORD }}
       LWS_REMOTE_PATH: ${{ secrets.LWS_REMOTE_PATH }}
-      LWS_HOST_FINGERPRINT: ${{ vars.LWS_HOST_FINGERPRINT }}
+      # Optional repository variable: the host name the TLS certificate must be valid for,
+      # when LWS presents a certificate for its own server name instead of LWS_HOST.
+      LWS_TLS_SERVERNAME: ${{ vars.LWS_TLS_SERVERNAME }}
       LWS_OPERATION: ${{ inputs.operation }}
       CONFIRM_PRODUCTION_OVERWRITE: ${{ inputs.confirm_production_overwrite }}
     steps:
@@ -47,28 +50,36 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for name in LWS_HOST LWS_USERNAME LWS_PASSWORD LWS_REMOTE_PATH LWS_HOST_FINGERPRINT; do
+          missing=0
+          for name in LWS_HOST LWS_USERNAME LWS_PASSWORD LWS_REMOTE_PATH; do
             if [[ -z "${!name}" ]]; then
-              echo "Required GitHub secret is missing: ${name}" >&2
-              exit 1
+              echo "::error::Required GitHub secret is missing: ${name}"
+              missing=1
             fi
           done
+          if (( missing )); then
+            exit 1
+          fi
+          if [[ "$LWS_REMOTE_PATH" != /* || "$LWS_REMOTE_PATH" == *".."* ]]; then
+            echo "::error::LWS_REMOTE_PATH must be an absolute path such as /htdocs, without '..'."
+            exit 1
+          fi
+          tls_name="${LWS_TLS_SERVERNAME:-$LWS_HOST}"
+          if [[ ! "$tls_name" =~ ^[A-Za-z0-9.-]+$ ]]; then
+            echo "::error::The TLS host name (LWS_TLS_SERVERNAME or LWS_HOST) is not a valid host name."
+            exit 1
+          fi
           if [[ "$LWS_OPERATION" == "deploy" && "$CONFIRM_PRODUCTION_OVERWRITE" != "true" ]]; then
-            echo "Deployment stopped: set confirm_production_overwrite to true for this manual run." >&2
+            echo "::error::Deployment stopped: set confirm_production_overwrite to true for this manual run."
             exit 1
           fi
           if [[ "$LWS_OPERATION" == "deploy" && ! -f index.html ]]; then
-            echo "Deployment stopped: index.html is missing from the repository root." >&2
+            echo "::error::Deployment stopped: index.html is missing from the repository root."
             exit 1
           fi
+          echo "All required settings are present (values are never printed)."
 
-      - name: Install SFTP password helper
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends sshpass
-
-      - name: Confirm IPv4 SFTP port reachability
+      - name: Confirm IPv4 FTPS port reachability
         shell: bash
         run: |
           python3 - <<'PY'
@@ -76,130 +87,227 @@ jobs:
 
           host = os.environ["LWS_HOST"]
           try:
-              addresses = sorted({item[4][0] for item in socket.getaddrinfo(host, 22, socket.AF_INET, socket.SOCK_STREAM)})
+              addresses = sorted({item[4][0] for item in socket.getaddrinfo(host, 21, socket.AF_INET, socket.SOCK_STREAM)})
           except OSError:
-              print("LWS host did not resolve to an IPv4 address.", file=sys.stderr)
+              print("::error::The LWS host did not resolve to an IPv4 address.")
               raise SystemExit(1)
           for address in addresses:
               try:
-                  with socket.create_connection((address, 22), timeout=8):
-                      print("IPv4 SFTP port 22 is reachable from this runner.")
+                  with socket.create_connection((address, 21), timeout=8):
+                      print("IPv4 FTPS control port 21 is reachable from this runner.")
                       break
               except OSError:
                   continue
           else:
-              print("IPv4 SFTP port 22 is not reachable from this runner.", file=sys.stderr)
+              print("::error::Port 21 of the LWS host is not reachable from this runner (network filtering on the LWS side?).")
               raise SystemExit(1)
           PY
 
-      - name: Pin and verify the LWS SSH host key
+      - name: Verify the LWS TLS certificate (no login)
         shell: bash
         run: |
           set -euo pipefail
-          known_hosts="$RUNNER_TEMP/lws_known_hosts"
-          keyscan_errors="$RUNNER_TEMP/lws_keyscan_errors"
-          if ! ssh-keyscan -4 -T 10 -p 22 -t ed25519,ecdsa,rsa "$LWS_HOST" > "$known_hosts" 2>"$keyscan_errors"; then
-            cat "$keyscan_errors" >&2
+          tls_name="${LWS_TLS_SERVERNAME:-$LWS_HOST}"
+          details="$RUNNER_TEMP/lws_tls_details"
+          result="$RUNNER_TEMP/lws_tls_result"
+          # Display only: what the server presents (subject, alternative names, issuer, expiry).
+          openssl s_client -connect "${LWS_HOST}:21" -starttls ftp -servername "$tls_name" </dev/null 2>/dev/null \
+            | openssl x509 -noout -subject -issuer -enddate -ext subjectAltName >"$details" 2>/dev/null || true
+          echo "Certificate presented by the FTP server:"
+          cat "$details" || true
+          # Strict verification: trusted chain AND host name. TLS verification is never disabled.
+          if ! openssl s_client -connect "${LWS_HOST}:21" -starttls ftp -servername "$tls_name" \
+                 -verify_hostname "$tls_name" -verify_return_error -brief </dev/null >"$result" 2>&1; then
+            grep -iE "verif|error" "$result" | head -n 10 || true
+            echo "::error::TLS certificate verification failed for the expected host name. If the certificate is issued for an LWS server name (for example *.lwspanel.com), ask LWS which FTP server name is covered by it and save that name in the repository variable LWS_TLS_SERVERNAME."
             exit 1
           fi
-          chmod 600 "$known_hosts"
-          if [[ ! -s "$known_hosts" ]]; then
-            cat "$keyscan_errors" >&2
-            echo "No SSH host key was returned by the LWS server." >&2
-            exit 1
-          fi
-          if ! ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | grep --fixed-strings --line-regexp --quiet "$LWS_HOST_FINGERPRINT"; then
-            echo "Observed SSH host key fingerprints:"
-            ssh-keygen -lf "$known_hosts" -E sha256 | awk '{print $2}' | sort -u
-            echo "LWS SSH host key did not match LWS_HOST_FINGERPRINT; connection refused." >&2
-            exit 1
-          fi
-          echo "LWS SSH host key fingerprint verified."
+          grep -iE "^(Protocol version|Verification)" "$result" || true
+          echo "TLS certificate chain and host name verified."
 
-      - name: Check the remote site directory
+      - name: Prepare the FTPS helper
+        shell: bash
+        run: |
+          cat >"$RUNNER_TEMP/lws_ftps.py" <<'PY'
+          """Explicit FTPS (AUTH TLS, port 21) helper for the LWS workflow.
+
+          Credentials only travel through a private curl config file (mode 600) that is deleted
+          after each call; they are never printed or passed on the command line.
+          TLS is mandatory (--ssl-reqd) and certificates are always verified (no --insecure).
+          Nothing in this helper deletes or renames a remote file.
+          """
+          import os
+          import subprocess
+          import sys
+          import urllib.parse
+          from pathlib import Path
+
+          HOST = os.environ["LWS_HOST"]
+          TLS_NAME = os.environ.get("LWS_TLS_SERVERNAME") or HOST
+          REMOTE = "/" + os.environ["LWS_REMOTE_PATH"].strip("/")
+          PORT = 21
+          TMP = Path(os.environ["RUNNER_TEMP"])
+
+          CURL_ERRORS = {
+              6: "the FTP host name could not be resolved",
+              7: "the FTP server could not be reached",
+              9: "the remote directory does not exist or access was denied",
+              19: "the remote file could not be read",
+              25: "the server refused the upload",
+              28: "the connection timed out",
+              35: "the TLS handshake failed",
+              60: "the TLS certificate could not be verified (chain or host name)",
+              64: "the server refused to switch to TLS",
+              67: "the login was refused (check LWS_USERNAME and LWS_PASSWORD)",
+              78: "the remote file does not exist",
+          }
+
+
+          def quote(value):
+              return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+          def url(*parts, directory=False):
+              segments = [s for s in REMOTE.split("/") if s]
+              for part in parts:
+                  segments.extend(s for s in part.split("/") if s)
+              # A leading %2F makes curl use an absolute path instead of one relative to the login directory.
+              path = "%2F" + "/".join(urllib.parse.quote(s, safe="") for s in segments)
+              return f"ftp://{TLS_NAME}:{PORT}/{path}" + ("/" if directory else "")
+
+
+          def curl(args, extra=(), max_time=180):
+              config = TMP / "lws_curl.conf"
+              lines = [
+                  "silent",
+                  "show-error",
+                  "ssl-reqd",
+                  "tlsv1.2",
+                  "ftp-pasv",
+                  "connect-timeout = 20",
+                  f"max-time = {max_time}",
+                  "user = " + quote(os.environ["LWS_USERNAME"] + ":" + os.environ["LWS_PASSWORD"]),
+                  "connect-to = " + quote(f"{TLS_NAME}:{PORT}:{HOST}:{PORT}"),
+                  *extra,
+              ]
+              descriptor = os.open(config, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+              with os.fdopen(descriptor, "w") as handle:
+                  handle.write("\n".join(lines) + "\n")
+              try:
+                  return subprocess.run(["curl", "--config", str(config), *args], capture_output=True, text=True)
+              finally:
+                  config.unlink(missing_ok=True)
+
+
+          def fail(result, action):
+              reason = CURL_ERRORS.get(result.returncode, "unexpected curl error")
+              detail = (result.stderr or "").strip()
+              print(f"::error::{action} failed: {reason} (curl exit code {result.returncode}).")
+              if detail:
+                  print(detail)
+              raise SystemExit(1)
+
+
+          def list_remote():
+              result = curl(["--list-only", url(directory=True)])
+              if result.returncode:
+                  fail(result, "Login and listing of the remote directory")
+              return sorted({line.strip() for line in result.stdout.splitlines() if line.strip()})
+
+
+          def check():
+              names = list_remote()
+              print(f"FTPS login succeeded and the remote directory was listed ({len(names)} entries).")
+              if "index.html" not in names:
+                  print("::error::The remote directory does not contain index.html: check LWS_REMOTE_PATH.")
+                  raise SystemExit(1)
+              result = curl(["--head", url("index.html")])
+              if result.returncode:
+                  fail(result, "Reading index.html metadata")
+              for line in result.stdout.splitlines():
+                  if line.lower().startswith(("content-length", "last-modified")):
+                      print("index.html " + line.strip())
+              print("Read-only check finished: no file was transferred, created, modified or deleted.")
+
+
+          def probe():
+              run_id = os.environ["GITHUB_RUN_ID"]
+              attempt = os.environ["GITHUB_RUN_ATTEMPT"]
+              name = f"deks-nexa-ftps-probe-{run_id}-{attempt}.txt"
+              local = TMP / name
+              content = f"DEKS NEXA LWS FTPS probe; run {run_id} attempt {attempt}\n"
+              local.write_text(content)
+
+              # Never overwrite: the unique name must not exist yet.
+              before = curl(["--output", str(TMP / "probe_before"), url(name)])
+              if before.returncode == 0:
+                  print(f"::error::{name} already exists on the server; nothing was uploaded.")
+                  raise SystemExit(1)
+              if before.returncode != 78:
+                  fail(before, "Confirming that the probe name is free")
+
+              upload = curl(["--upload-file", str(local), url(name)])
+              if upload.returncode:
+                  fail(upload, "Uploading the probe file")
+
+              after = curl(["--output", str(TMP / "probe_after"), url(name)])
+              if after.returncode:
+                  fail(after, "Reading the probe file back")
+              if (TMP / "probe_after").read_text() != content:
+                  print("::error::The probe file read back from the server does not match what was uploaded.")
+                  raise SystemExit(1)
+              print(f"Probe uploaded and verified: <LWS_REMOTE_PATH>/{name}")
+              print("This test file is intentionally LEFT on the server. No remote file was deleted or overwritten.")
+
+
+          def deploy():
+              root = Path.cwd()
+              files = [
+                  Path("index.html"), Path("about.html"), Path("contact.html"),
+                  Path("projets.html"), Path("service.html"),
+                  Path("css/deks.css"),
+                  Path("js/main.js"), Path("js/deks-ui.js"), Path("js/accueil.js"),
+              ]
+              for folder in (Path("img"), Path("image")):
+                  if folder.is_dir():
+                      files.extend(path.relative_to(root) for path in folder.rglob("*") if path.is_file())
+              files = sorted(set(files))
+              missing = [str(path) for path in files if not (root / path).is_file()]
+              if missing:
+                  print("::error::Required production files are missing: " + ", ".join(missing))
+                  raise SystemExit(1)
+
+              extra = ["ftp-create-dirs"]
+              for path in files:
+                  extra.append("upload-file = " + quote((root / path).as_posix()))
+                  extra.append("url = " + quote(url(path.as_posix())))
+              result = curl([], extra=extra, max_time=780)
+              if result.returncode:
+                  fail(result, "Uploading the site files")
+              if "index.html" not in list_remote():
+                  print("::error::index.html was not found after the upload.")
+                  raise SystemExit(1)
+              print(f"{len(files)} site files uploaded over FTPS and index.html verified. No remote file was deleted.")
+
+
+          OPERATIONS = {"check": check, "probe": probe, "deploy": deploy}
+
+          if __name__ == "__main__":
+              OPERATIONS[sys.argv[1]]()
+          PY
+          chmod 600 "$RUNNER_TEMP/lws_ftps.py"
+
+      - name: Check login, remote directory and index.html (read-only)
         if: inputs.operation == 'check'
         shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
-          import json, os
-          print("cd " + json.dumps(os.environ["LWS_REMOTE_PATH"]))
-          print("pwd")
-          print("ls index.html")
-          print("bye")
-          PY
-          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -v -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
-            -oPreferredAuthentications=password,keyboard-interactive \
-            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
-            "$LWS_USERNAME@$LWS_HOST"
-          echo "SFTP login succeeded and the remote site directory contains index.html."
+        run: python3 "$RUNNER_TEMP/lws_ftps.py" check
 
       - name: Upload and verify a unique non-overwriting probe
         if: inputs.operation == 'probe'
         shell: bash
-        run: |
-          set -euo pipefail
-          probe_name=".github-actions-probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.txt"
-          printf 'DEKS NEXA LWS SFTP probe; run %s attempt %s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/$probe_name"
-          export PROBE_NAME="$probe_name"
-          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
-          import json, os
-          print("cd " + json.dumps(os.environ["LWS_REMOTE_PATH"]))
-          print("put " + json.dumps(os.environ["RUNNER_TEMP"] + "/" + os.environ["PROBE_NAME"]) + " " + json.dumps(os.environ["PROBE_NAME"]))
-          print("ls " + json.dumps(os.environ["PROBE_NAME"]))
-          print("bye")
-          PY
-          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
-            -oPreferredAuthentications=password,keyboard-interactive \
-            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
-            "$LWS_USERNAME@$LWS_HOST"
-          echo "Unique probe uploaded and verified. It is hidden and intentionally left in place; no remote files are deleted."
+        run: python3 "$RUNNER_TEMP/lws_ftps.py" probe
 
       - name: Upload the reviewed static site files
         if: inputs.operation == 'deploy' && inputs.confirm_production_overwrite
         shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY' > "$RUNNER_TEMP/lws_sftp_commands"
-          import json, os
-          from pathlib import Path
-
-          root = Path.cwd()
-          files = [
-              Path("index.html"), Path("about.html"), Path("contact.html"),
-              Path("projets.html"), Path("service.html"),
-              Path("css/deks.css"),
-              Path("js/main.js"), Path("js/deks-ui.js"), Path("js/accueil.js"),
-          ]
-          for folder in (Path("img"), Path("image")):
-              if folder.is_dir():
-                  files.extend(path.relative_to(root) for path in folder.rglob("*") if path.is_file())
-
-          files = sorted(set(files))
-          missing = [str(path) for path in files if not (root / path).is_file()]
-          if missing:
-              raise SystemExit("Required production files are missing: " + ", ".join(missing))
-
-          remote_root = os.environ["LWS_REMOTE_PATH"]
-          print("cd " + json.dumps(remote_root))
-          directories = sorted({path.parent.as_posix() for path in files if path.parent != Path(".")})
-          for directory in directories:
-              current = ""
-              for part in Path(directory).parts:
-                  current = f"{current}/{part}" if current else part
-                  print("-mkdir " + json.dumps(current))
-          for path in files:
-              local_path = (root / path).as_posix()
-              remote_path = path.as_posix()
-              print("put " + json.dumps(local_path) + " " + json.dumps(remote_path))
-          print("ls index.html")
-          print("bye")
-          PY
-          SSHPASS="$LWS_PASSWORD" sshpass -e sftp -q -b "$RUNNER_TEMP/lws_sftp_commands" \
-            -P 22 -oAddressFamily=inet -oBatchMode=no -oPubkeyAuthentication=no \
-            -oPreferredAuthentications=password,keyboard-interactive \
-            -oStrictHostKeyChecking=yes -oUserKnownHostsFile="$RUNNER_TEMP/lws_known_hosts" \
-            "$LWS_USERNAME@$LWS_HOST"
-          echo "Selected static site files uploaded and index.html verified. No remote files were deleted."
+        run: python3 "$RUNNER_TEMP/lws_ftps.py" deploy
