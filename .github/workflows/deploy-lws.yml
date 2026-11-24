@@ -5,19 +5,31 @@ on:
   workflow_dispatch:
     inputs:
       operation:
-        description: "check: verify TLS, login, remote directory and index.html (read-only); probe: upload one uniquely named test file (never overwrites); deploy: upload the site files"
+        description: "check (read-only) | backup (download the server files) | cleanup (delete the paths listed in .github/lws-cleanup.txt) | probe (upload one unique test file) | deploy (upload the site files)"
         required: true
         type: choice
         options:
           - check
+          - backup
+          - cleanup
           - probe
           - deploy
         default: check
       confirm_production_overwrite:
-        description: "Required for deploy only: authorize overwriting matching files in the live site directory"
+        description: "Required for deploy: authorize overwriting matching files in the live site directory"
         required: true
         type: boolean
         default: false
+      confirm_remote_delete:
+        description: "Required for cleanup: authorize deleting exactly the paths listed in .github/lws-cleanup.txt"
+        required: true
+        type: boolean
+        default: false
+      only:
+        description: "Optional for deploy: comma-separated site files to upload (default: every site file)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -31,7 +43,7 @@ jobs:
     name: LWS FTPS ${{ inputs.operation }}
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       LWS_HOST: ${{ secrets.LWS_HOST }}
       LWS_USERNAME: ${{ secrets.LWS_USERNAME }}
@@ -41,7 +53,9 @@ jobs:
       # when LWS presents a certificate for its own server name instead of LWS_HOST.
       LWS_TLS_SERVERNAME: ${{ vars.LWS_TLS_SERVERNAME }}
       LWS_OPERATION: ${{ inputs.operation }}
+      LWS_ONLY: ${{ inputs.only }}
       CONFIRM_PRODUCTION_OVERWRITE: ${{ inputs.confirm_production_overwrite }}
+      CONFIRM_REMOTE_DELETE: ${{ inputs.confirm_remote_delete }}
     steps:
       - name: Check out the selected main branch
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -61,7 +75,7 @@ jobs:
             exit 1
           fi
           if [[ "$LWS_REMOTE_PATH" != /* || "$LWS_REMOTE_PATH" == *".."* ]]; then
-            echo "::error::LWS_REMOTE_PATH must be an absolute path such as /htdocs, without '..'."
+            echo "::error::LWS_REMOTE_PATH must be an absolute path such as / or /htdocs, without '..'."
             exit 1
           fi
           tls_name="${LWS_TLS_SERVERNAME:-$LWS_HOST}"
@@ -77,13 +91,21 @@ jobs:
             echo "::error::Deployment stopped: index.html is missing from the repository root."
             exit 1
           fi
+          if [[ "$LWS_OPERATION" == "cleanup" && "$CONFIRM_REMOTE_DELETE" != "true" ]]; then
+            echo "::error::Cleanup stopped: set confirm_remote_delete to true for this manual run."
+            exit 1
+          fi
+          if [[ "$LWS_OPERATION" == "cleanup" && ! -s .github/lws-cleanup.txt ]]; then
+            echo "::error::Cleanup stopped: .github/lws-cleanup.txt is missing or empty."
+            exit 1
+          fi
           echo "All required settings are present (values are never printed)."
 
       - name: Confirm IPv4 FTPS port reachability
         shell: bash
         run: |
           python3 - <<'PY'
-          import os, socket, sys
+          import os, socket
 
           host = os.environ["LWS_HOST"]
           try:
@@ -131,13 +153,16 @@ jobs:
           cat >"$RUNNER_TEMP/lws_ftps.py" <<'PY'
           """Explicit FTPS (AUTH TLS, port 21) helper for the LWS workflow.
 
-          Credentials only travel through a private curl config file (mode 600) that is deleted
-          after each call; they are never printed or passed on the command line.
-          TLS is mandatory (--ssl-reqd) and certificates are always verified (no --insecure).
-          Nothing in this helper deletes or renames a remote file.
+          - TLS is mandatory and the certificate (chain and host name) is always verified.
+          - Credentials come from the environment and are never printed.
+          - Only `cleanup` deletes anything, and only the paths listed in .github/lws-cleanup.txt.
+          - `deploy` never deletes and never uploads the excluded files below.
           """
+          import fnmatch
+          import ftplib
           import os
-          import subprocess
+          import posixpath
+          import ssl
           import sys
           import urllib.parse
           from pathlib import Path
@@ -145,190 +170,283 @@ jobs:
           HOST = os.environ["LWS_HOST"]
           TLS_NAME = os.environ.get("LWS_TLS_SERVERNAME") or HOST
           REMOTE = "/" + os.environ["LWS_REMOTE_PATH"].strip("/")
-          PORT = 21
           TMP = Path(os.environ["RUNNER_TEMP"])
+          ROOT = Path.cwd()
 
-          CURL_ERRORS = {
-              6: "the FTP host name could not be resolved",
-              7: "the FTP server could not be reached",
-              9: "the remote directory does not exist or access was denied",
-              19: "the remote file could not be read",
-              25: "the server refused the upload",
-              28: "the connection timed out",
-              35: "the TLS handshake failed",
-              60: "the TLS certificate could not be verified (chain or host name)",
-              64: "the server refused to switch to TLS",
-              67: "the login was refused (check LWS_USERNAME and LWS_PASSWORD)",
-              78: "the remote file does not exist",
-          }
-
-
-          def quote(value):
-              return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+          # Never uploaded to the server (permanent exclusion list).
+          EXCLUDED = [
+              ".git", ".git/*", ".github", ".github/*", ".vercel", ".vercel/*",
+              ".env*", "*/.env*", ".gitignore", ".gitattributes",
+              "scss", "scss/*", "*.scss", "*.map", "*.md", "PROMPT_*",
+              "_backup_serveur_*", "_backup_serveur_*/*",
+              "node_modules", "node_modules/*", "Thumbs.db", "*/Thumbs.db", ".DS_Store", "*/.DS_Store",
+          ]
+          # Never copied into the backup artifact (the repository is public).
+          BACKUP_SKIPPED = [".git", ".git/*", ".env*", "*/.env*"]
+          # Never deletable as a whole.
+          PROTECTED = {"", ".", "index.html", ".htaccess", "404.html", "css", "js", "image", "img"}
 
 
-          # LWS_REMOTE_PATH is tried first as an absolute path, then relative to the FTP login directory.
-          PATH_MODE = {"absolute": True}
+          def matches(rel, patterns):
+              return any(fnmatch.fnmatch(rel, pattern) for pattern in patterns)
 
 
-          def url(*parts, directory=False, base=True):
-              segments = [s for s in REMOTE.split("/") if s] if base else []
-              for part in parts:
-                  segments.extend(s for s in part.split("/") if s)
-              path = "/".join(urllib.parse.quote(s, safe="") for s in segments)
-              if PATH_MODE["absolute"] and base:
-                  # A leading %2F makes curl use an absolute path instead of one relative to the login directory.
-                  path = "%2F" + path
-              return f"ftp://{TLS_NAME}:{PORT}/{path}" + ("/" if directory and path else "")
+          class LwsFTP(ftplib.FTP_TLS):
+              def ntransfercmd(self, cmd, rest=None):
+                  conn, size = ftplib.FTP.ntransfercmd(self, cmd, rest)
+                  if self._prot_p:
+                      conn = self.context.wrap_socket(conn, server_hostname=TLS_NAME, session=self.sock.session)
+                      unwrap = conn.unwrap
+
+                      def safe_unwrap():
+                          try:
+                              return unwrap()
+                          except (ssl.SSLError, OSError):
+                              return None
+
+                      conn.unwrap = safe_unwrap
+                  return conn, size
 
 
-          def curl(args, extra=(), max_time=180):
-              config = TMP / "lws_curl.conf"
-              lines = [
-                  "silent",
-                  "show-error",
-                  "ssl-reqd",
-                  "tlsv1.2",
-                  "ftp-pasv",
-                  "connect-timeout = 20",
-                  f"max-time = {max_time}",
-                  "user = " + quote(os.environ["LWS_USERNAME"] + ":" + os.environ["LWS_PASSWORD"]),
-                  "connect-to = " + quote(f"{TLS_NAME}:{PORT}:{HOST}:{PORT}"),
-                  *extra,
-              ]
-              descriptor = os.open(config, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
-              with os.fdopen(descriptor, "w") as handle:
-                  handle.write("\n".join(lines) + "\n")
+          def connect():
+              context = ssl.create_default_context()
+              context.minimum_version = ssl.TLSVersion.TLSv1_2
+              context.maximum_version = ssl.TLSVersion.TLSv1_2
+              ftp = LwsFTP(context=context, timeout=60)
+              ftp.connect(HOST, 21)
+              ftp.host = TLS_NAME  # the certificate must be valid for this name
+              ftp.auth()
+              ftp.login(os.environ["LWS_USERNAME"], os.environ["LWS_PASSWORD"])
+              ftp.prot_p()
+              ftp.cwd(REMOTE)
+              ftp.voidcmd("TYPE I")
+              return ftp
+
+
+          def entries(ftp, path):
+              """(name, is_dir, size) of a remote directory, relative to REMOTE."""
+              result = []
               try:
-                  return subprocess.run(["curl", "--config", str(config), *args], capture_output=True, text=True)
+                  for name, facts in ftp.mlsd(path, facts=["type", "size"]):
+                      kind = facts.get("type", "").lower()
+                      if name in (".", "..") or kind in ("cdir", "pdir"):
+                          continue
+                      result.append((name, kind == "dir", int(facts.get("size", 0) or 0)))
+                  return result
+              except ftplib.error_perm:
+                  pass
+              for full in ftp.nlst(path):
+                  name = posixpath.basename(full.rstrip("/"))
+                  if name in (".", ".."):
+                      continue
+                  child = posixpath.join(path, name) if path not in ("", ".") else name
+                  try:
+                      ftp.cwd(child)
+                      ftp.cwd(REMOTE)
+                      result.append((name, True, 0))
+                  except ftplib.error_perm:
+                      result.append((name, False, 0))
+              return result
+
+
+          def walk(ftp, rel="", prune=()):
+              for name, is_dir, size in entries(ftp, rel or "."):
+                  child = f"{rel}/{name}" if rel else name
+                  if matches(child, prune):
+                      yield child, is_dir, size, True
+                      continue
+                  yield child, is_dir, size, False
+                  if is_dir:
+                      yield from walk(ftp, child, prune)
+
+
+          def is_remote_dir(ftp, rel):
+              try:
+                  ftp.cwd(rel)
+                  return True
+              except ftplib.error_perm:
+                  return False
               finally:
-                  config.unlink(missing_ok=True)
-
-
-          def fail(result, action):
-              reason = CURL_ERRORS.get(result.returncode, "unexpected curl error")
-              detail = (result.stderr or "").strip()
-              print(f"::error::{action} failed: {reason} (curl exit code {result.returncode}).")
-              if detail:
-                  print(detail)
-              raise SystemExit(1)
-
-
-          def names_of(result):
-              return sorted({line.strip() for line in result.stdout.splitlines() if line.strip()})
-
-
-          def list_remote():
-              result = curl(["--list-only", url(directory=True)])
-              if result.returncode == 9 and PATH_MODE["absolute"]:
-                  print("The absolute remote path was refused; trying it relative to the FTP login directory.")
-                  PATH_MODE["absolute"] = False
-                  result = curl(["--list-only", url(directory=True)])
-              if result.returncode:
-                  login = curl(["--list-only", url(directory=True, base=False)])
-                  if login.returncode == 0:
-                      print("Entries of the FTP login directory: " + ", ".join(names_of(login)[:40]))
-                  fail(result, "Login and listing of the remote directory")
-              mode = "an absolute path" if PATH_MODE["absolute"] else "a path relative to the FTP login directory"
-              print(f"Remote directory reached as {mode}.")
-              return names_of(result)
+                  ftp.cwd(REMOTE)
 
 
           def check():
-              names = list_remote()
-              print(f"FTPS login succeeded and the remote directory was listed ({len(names)} entries).")
+              ftp = connect()
+              names = sorted(name for name, _, _ in entries(ftp, "."))
+              print(f"FTPS login succeeded; the remote site directory has {len(names)} entries:")
+              print("  " + ", ".join(names))
               if "index.html" not in names:
                   print("::error::The remote directory does not contain index.html: check LWS_REMOTE_PATH.")
                   raise SystemExit(1)
-              result = curl(["--head", url("index.html")])
-              if result.returncode:
-                  fail(result, "Reading index.html metadata")
-              for line in result.stdout.splitlines():
-                  if line.lower().startswith(("content-length", "last-modified")):
-                      print("index.html " + line.strip())
+              print(f"index.html size: {ftp.size('index.html')} bytes")
+              ftp.quit()
               print("Read-only check finished: no file was transferred, created, modified or deleted.")
+
+
+          def backup():
+              ftp = connect()
+              dest = TMP / "lws-backup"
+              dest.mkdir(parents=True, exist_ok=True)
+              manifest, files, total = [], 0, 0
+              for rel, is_dir, size, pruned in walk(ftp, prune=BACKUP_SKIPPED):
+                  if pruned:
+                      manifest.append(f"{'dir ' if is_dir else 'file'}\t-\t{rel}\t(present on the server, not copied: sensitive)")
+                      continue
+                  if is_dir:
+                      (dest / rel).mkdir(parents=True, exist_ok=True)
+                      manifest.append(f"dir \t-\t{rel}")
+                      continue
+                  target = dest / rel
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  with open(target, "wb") as handle:
+                      ftp.retrbinary(f"RETR {rel}", handle.write)
+                  files += 1
+                  total += target.stat().st_size
+                  manifest.append(f"file\t{target.stat().st_size}\t{rel}")
+              ftp.quit()
+              (dest / "_manifest_serveur.tsv").write_text("\n".join(manifest) + "\n", encoding="utf-8")
+              print(f"Backup finished: {files} files ({total} bytes) downloaded. Nothing was modified on the server.")
+              for line in manifest:
+                  if "not copied" in line:
+                      print("  " + line.replace("\t", " "))
+
+
+          def cleanup():
+              wanted = []
+              for line in (ROOT / ".github/lws-cleanup.txt").read_text(encoding="utf-8").splitlines():
+                  line = line.strip()
+                  if line and not line.startswith("#"):
+                      wanted.append(line.strip("/"))
+              for rel in wanted:
+                  if rel in PROTECTED or ".." in rel.split("/") or rel.startswith("/"):
+                      print(f"::error::Refusing to delete protected or unsafe path: {rel}")
+                      raise SystemExit(1)
+              ftp = connect()
+              deleted = absent = 0
+              for rel in wanted:
+                  if is_remote_dir(ftp, rel):
+                      children = list(walk(ftp, rel))
+                      for child, is_dir, _, _ in children:
+                          if not is_dir:
+                              ftp.delete(child)
+                              deleted += 1
+                      for child in sorted((c for c, is_dir, _, _ in children if is_dir), key=lambda p: p.count("/"), reverse=True):
+                          ftp.rmd(child)
+                      ftp.rmd(rel)
+                      print(f"deleted folder {rel} ({sum(1 for c in children if not c[1])} files)")
+                      continue
+                  try:
+                      ftp.delete(rel)
+                      deleted += 1
+                      print(f"deleted {rel}")
+                  except ftplib.error_perm as error:
+                      if str(error).startswith("550"):
+                          absent += 1
+                          print(f"absent, skipped: {rel}")
+                      else:
+                          raise
+              ftp.quit()
+              print(f"Cleanup finished: {deleted} files deleted, {absent} already absent. Only listed paths were touched.")
+
+
+          def site_files():
+              candidates = []
+              for path in sorted(ROOT.rglob("*")):
+                  if not path.is_file():
+                      continue
+                  rel = path.relative_to(ROOT).as_posix()
+                  if matches(rel, EXCLUDED):
+                      continue
+                  candidates.append(rel)
+              text = "\n".join(
+                  urllib.parse.unquote((ROOT / rel).read_text(encoding="utf-8", errors="ignore"))
+                  for rel in candidates
+                  if rel.endswith((".html", ".css", ".js", ".xml", ".txt", ".json", ".webmanifest", ".htaccess"))
+              )
+              files = [rel for rel in candidates if not rel.startswith(("image/", "img/")) or rel in text]
+              # Assets first, then pages, .htaccess last (it may reference 404.html).
+              return sorted(files, key=lambda rel: (rel == ".htaccess", rel.endswith(".html"), rel))
+
+
+          def deploy():
+              files = site_files()
+              only = [item.strip().strip("/") for item in os.environ.get("LWS_ONLY", "").split(",") if item.strip()]
+              if only:
+                  unknown = [item for item in only if item not in files]
+                  if unknown:
+                      print("::error::Not deployable (excluded, unused or missing): " + ", ".join(unknown))
+                      raise SystemExit(1)
+                  files = [rel for rel in files if rel in only]
+              ftp = connect()
+              made = set()
+              for rel in files:
+                  folder = posixpath.dirname(rel)
+                  current = ""
+                  for part in folder.split("/") if folder else []:
+                      current = f"{current}/{part}" if current else part
+                      if current not in made:
+                          try:
+                              ftp.mkd(current)
+                          except ftplib.error_perm:
+                              pass
+                          made.add(current)
+                  with open(ROOT / rel, "rb") as handle:
+                      ftp.storbinary(f"STOR {rel}", handle)
+                  print(f"uploaded {rel}")
+              names = {name for name, _, _ in entries(ftp, ".")}
+              ftp.quit()
+              if "index.html" not in names:
+                  print("::error::index.html was not found after the upload.")
+                  raise SystemExit(1)
+              print(f"{len(files)} site files uploaded over FTPS. No remote file was deleted.")
 
 
           def probe():
               run_id = os.environ["GITHUB_RUN_ID"]
               attempt = os.environ["GITHUB_RUN_ATTEMPT"]
               name = f"deks-nexa-ftps-probe-{run_id}-{attempt}.txt"
-              local = TMP / name
-              content = f"DEKS NEXA LWS FTPS probe; run {run_id} attempt {attempt}\n"
-              local.write_text(content)
-              list_remote()  # read-only: confirms login and resolves how the remote path is reached
-
-              # Never overwrite: the unique name must not exist yet.
-              before = curl(["--output", str(TMP / "probe_before"), url(name)])
-              if before.returncode == 0:
+              content = f"DEKS NEXA LWS FTPS probe; run {run_id} attempt {attempt}\n".encode()
+              ftp = connect()
+              if name in {n for n, _, _ in entries(ftp, ".")}:
                   print(f"::error::{name} already exists on the server; nothing was uploaded.")
                   raise SystemExit(1)
-              if before.returncode != 78:
-                  fail(before, "Confirming that the probe name is free")
-
-              upload = curl(["--upload-file", str(local), url(name)])
-              if upload.returncode:
-                  fail(upload, "Uploading the probe file")
-
-              after = curl(["--output", str(TMP / "probe_after"), url(name)])
-              if after.returncode:
-                  fail(after, "Reading the probe file back")
-              if (TMP / "probe_after").read_text() != content:
+              local = TMP / name
+              local.write_bytes(content)
+              with open(local, "rb") as handle:
+                  ftp.storbinary(f"STOR {name}", handle)
+              chunks = []
+              ftp.retrbinary(f"RETR {name}", chunks.append)
+              ftp.quit()
+              if b"".join(chunks) != content:
                   print("::error::The probe file read back from the server does not match what was uploaded.")
                   raise SystemExit(1)
-              print(f"Probe uploaded and verified: <LWS_REMOTE_PATH>/{name}")
-              print("This test file is intentionally LEFT on the server. No remote file was deleted or overwritten.")
+              print(f"Probe uploaded and verified: {name} (intentionally LEFT on the server; nothing deleted or overwritten).")
 
-
-          def deploy():
-              root = Path.cwd()
-              files = [
-                  Path("index.html"), Path("about.html"), Path("contact.html"),
-                  Path("projets.html"), Path("service.html"),
-                  Path("css/deks.css"),
-                  Path("js/main.js"), Path("js/deks-ui.js"), Path("js/accueil.js"),
-              ]
-              for folder in (Path("img"), Path("image")):
-                  if folder.is_dir():
-                      files.extend(path.relative_to(root) for path in folder.rglob("*") if path.is_file())
-              files = sorted(set(files))
-              missing = [str(path) for path in files if not (root / path).is_file()]
-              if missing:
-                  print("::error::Required production files are missing: " + ", ".join(missing))
-                  raise SystemExit(1)
-
-              list_remote()  # read-only: confirms login and resolves how the remote path is reached
-              extra = ["ftp-create-dirs"]
-              for path in files:
-                  extra.append("upload-file = " + quote((root / path).as_posix()))
-                  extra.append("url = " + quote(url(path.as_posix())))
-              result = curl([], extra=extra, max_time=780)
-              if result.returncode:
-                  fail(result, "Uploading the site files")
-              if "index.html" not in list_remote():
-                  print("::error::index.html was not found after the upload.")
-                  raise SystemExit(1)
-              print(f"{len(files)} site files uploaded over FTPS and index.html verified. No remote file was deleted.")
-
-
-          OPERATIONS = {"check": check, "probe": probe, "deploy": deploy}
 
           if __name__ == "__main__":
-              OPERATIONS[sys.argv[1]]()
+              operations = {"check": check, "backup": backup, "cleanup": cleanup, "probe": probe, "deploy": deploy}
+              try:
+                  operations[sys.argv[1]]()
+              except ssl.SSLCertVerificationError as error:
+                  print(f"::error::TLS certificate verification failed: {error.verify_message}")
+                  raise SystemExit(1)
+              except ftplib.all_errors as error:
+                  print(f"::error::FTPS {sys.argv[1]} failed: {error}")
+                  raise SystemExit(1)
           PY
           chmod 600 "$RUNNER_TEMP/lws_ftps.py"
 
-      - name: Check login, remote directory and index.html (read-only)
-        if: inputs.operation == 'check'
+      - name: Run the requested operation
+        if: inputs.operation != 'deploy' || inputs.confirm_production_overwrite
         shell: bash
-        run: python3 "$RUNNER_TEMP/lws_ftps.py" check
+        run: python3 "$RUNNER_TEMP/lws_ftps.py" "$LWS_OPERATION"
 
-      - name: Upload and verify a unique non-overwriting probe
-        if: inputs.operation == 'probe'
-        shell: bash
-        run: python3 "$RUNNER_TEMP/lws_ftps.py" probe
-
-      - name: Upload the reviewed static site files
-        if: inputs.operation == 'deploy' && inputs.confirm_production_overwrite
-        shell: bash
-        run: python3 "$RUNNER_TEMP/lws_ftps.py" deploy
+      - name: Keep the server backup as a short-lived artifact
+        if: inputs.operation == 'backup'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lws-backup-${{ github.run_id }}
+          path: ${{ runner.temp }}/lws-backup
+          retention-days: 3
+          if-no-files-found: error
+          include-hidden-files: true
