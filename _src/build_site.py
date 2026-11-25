@@ -364,8 +364,12 @@ def reviews_block():
     return (f'<div class="dn-reviews" id="avis">\n'
             f'<div class="dn-subhead dn-reveal"><p class="dn-label">Avis clients</p>'
             f'<h2 class="dn-subtitle">Ce que disent <em class="dn-serif">nos clients</em>.</h2></div>\n'
-            f'<ul class="dn-reviews-list">\n{cards}</ul>\n'
-            f'<div class="dn-actions dn-reveal">{button}</div>\n</div>\n')
+            f'<div class="dn-carousel" data-carousel>\n'
+            f'<ul class="dn-reviews-list" tabindex="0" aria-label="Avis clients">\n{cards}</ul>\n'
+            f'<div class="dn-reviews-bar dn-reveal"><div class="dn-actions">{button}</div>'
+            f'<div class="dn-carousel-nav"><button class="dn-carousel-btn" type="button" data-dir="-1" aria-label="Avis précédents">{ARROW}</button>'
+            f'<button class="dn-carousel-btn" type="button" data-dir="1" aria-label="Avis suivants">{ARROW}</button></div></div>\n'
+            f'</div>\n</div>\n')
 
 # ------------------------------------------------------------------ page service / métier
 def landing(p):

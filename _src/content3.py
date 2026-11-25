@@ -334,8 +334,8 @@ REVIEWS = [
     dict(name="Audrey H.", stars=5, text="J'ai fait appel à DEKS NEXA pour développer une application adaptée à mon activité. Je suis satisfait du résultat, l'application répond bien à mes besoins et le suivi a été appréciable. Merci pour le travail !"),
     dict(name="Odette D.", stars=5, text="J'avais besoin d'une solution pour mieux organiser et gérer certaines activités de mon entreprise. DEKS NEXA a su proposer une solution adaptée à mes besoins. Je suis satisfait de cette collaboration."),
     dict(name="Géraud", stars=5, text="Une équipe dynamique, professionnelle et à l'écoute. DEKS NEXA prend le temps de comprendre les besoins du client avant de proposer une solution. Très bonne collaboration du début à la fin."),
-    dict(name="Seho", stars=5, text=""),   # [À COMPLÉTER] texte complet de l'avis de Seho
-    dict(name="K. S.", stars=5, text=""),  # [À COMPLÉTER] texte complet de l'avis de KStalker
+    dict(name="Seho", stars=5, text="Ce que j'apprécie particulièrement chez DEKS NEXA, c'est le suivi après la livraison. L'équipe reste disponible pour répondre aux questions et apporter les ajustements nécessaires. Un accompagnement sérieux et rassurant."),
+    dict(name="K. S.", stars=5, text="Très bonne expérience avec DEKS NEXA. L'équipe a su comprendre mes besoins et développer une solution informatique adaptée à mon activité. Le travail est professionnel et le résultat correspond à mes attentes. Je recommande vivement."),
     dict(name="Edmond F.", stars=5, text="C'était une belle expérience de collaborer avec vous sur mon projet. Merci à vous"),
 ]
 REVIEWS_URL = ""  # [À COMPLÉTER] lien Google Maps de la fiche (s'ouvre dans un nouvel onglet)
