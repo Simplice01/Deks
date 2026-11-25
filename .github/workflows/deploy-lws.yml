@@ -178,7 +178,7 @@ jobs:
               ".git", ".git/*", ".github", ".github/*", ".vercel", ".vercel/*",
               ".env*", "*/.env*", ".gitignore", ".gitattributes",
               "scss", "scss/*", "*.scss", "*.map", "*.md", "PROMPT_*",
-              "_backup_serveur_*", "_backup_serveur_*/*",
+              "_backup_serveur_*", "_backup_serveur_*/*", "_src", "_src/*",
               "node_modules", "node_modules/*", "Thumbs.db", "*/Thumbs.db", ".DS_Store", "*/.DS_Store",
           ]
           # Never copied into the backup artifact (the repository is public).
