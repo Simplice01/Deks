@@ -1,8 +1,7 @@
 # Contenu éditorial du site Deks Nexa (référencement).
-# Règle : aucun prix, chiffre, client ou avis inventé. Les manques sont marqués [À COMPLÉTER].
+# Règle : aucun prix, chiffre, client ou avis inventé. Les modalités commerciales sont précisées dans le devis.
 
 DEFAULT_WA = "Bonjour Deks Nexa, je souhaite parler de mon projet."
-TBD = "<mark class=\"dn-todo\">[À COMPLÉTER]</mark>"
 
 # ------------------------------------------------------------------ services (ordre de priorité)
 SERVICES = [
@@ -69,15 +68,15 @@ SERVICES = [
         faq_title="Vos questions sur le logiciel de gestion.", faq_word="logiciel de gestion",
         faq=[
             ("Combien coûte un logiciel de gestion sur mesure au Bénin ?",
-             f"Le prix dépend des modules retenus, du nombre d'utilisateurs et des documents à produire. Nous établissons un devis détaillé après avoir étudié votre besoin. Fourchette de prix indicative : {TBD}."),
+             "Le tarif dépend des modules, du nombre d'utilisateurs et des documents nécessaires. Après étude du besoin, nous vous remettons un devis détaillé."),
             ("Combien de temps faut-il pour le mettre en place ?",
-             f"Nous livrons par étapes : une première partie utilisable, puis les modules suivants. Le délai dépend du périmètre. Délai indicatif pour une première version : {TBD}."),
+             "Le projet est réalisé par étapes. Le calendrier est défini après étude du périmètre et des priorités."),
             ("Peut-on récupérer nos fichiers Excel actuels ?",
              "Oui. Lors de la mise en service, nous reprenons vos listes existantes de clients, de produits et de stocks pour que vous ne repartiez pas de zéro."),
             ("Qui s'occupe de la maintenance après la livraison ?",
-             f"Deks Nexa assure le suivi après livraison : corrections, évolutions et assistance à vos équipes. Formules et conditions de maintenance : {TBD}."),
+             "Nous pouvons prévoir des corrections, des évolutions et de l'assistance après livraison. Les modalités sont précisées dans le devis."),
             ("Peut-on payer en plusieurs fois ?",
-             f"Les modalités de paiement sont précisées dans le devis. Paiement échelonné : {TBD}."),
+             "Les modalités de paiement sont précisées dans le devis, avant le démarrage du projet."),
             ("Travaillez-vous avec des entreprises hors de Cotonou ?",
              "Oui. Nous travaillons avec des entreprises de tout le Bénin et d'Afrique francophone : les échanges se font sur WhatsApp et en visioconférence."),
         ],
@@ -338,4 +337,4 @@ REVIEWS = [
     dict(name="K. S.", stars=5, text="Très bonne expérience avec DEKS NEXA. L'équipe a su comprendre mes besoins et développer une solution informatique adaptée à mon activité. Le travail est professionnel et le résultat correspond à mes attentes. Je recommande vivement."),
     dict(name="Edmond F.", stars=5, text="C'était une belle expérience de collaborer avec vous sur mon projet. Merci à vous"),
 ]
-REVIEWS_URL = ""  # [À COMPLÉTER] lien Google Maps de la fiche (s'ouvre dans un nouvel onglet)
+REVIEWS_URL = "https://maps.app.goo.gl/rzvPmQ1cR6AUEbaQ9"  # Google Business Profile link

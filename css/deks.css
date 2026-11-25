@@ -43,6 +43,8 @@
 
     --dn-section: 88px;
     --dn-gutter: 20px;
+    /* Largeur du contenu : grandit avec l'écran (1200 px → 1600 px). */
+    --dn-max: clamp(1200px, 80vw, 1600px);
     --dn-nav-h: 68px;
     --dn-ease: cubic-bezier(.2, .7, .2, 1);
 
@@ -227,7 +229,7 @@ strong {
 
 /* --- Grille ------------------------------------------------------------ */
 .dn-container {
-    width: min(1200px, 100% - 2 * var(--dn-gutter));
+    width: min(var(--dn-max), 100% - 2 * var(--dn-gutter));
     margin-inline: auto;
 }
 
@@ -530,7 +532,7 @@ h3 {
     align-items: center;
     justify-content: space-between;
     gap: var(--dn-s4);
-    width: min(1200px, 100% - 2 * var(--dn-gutter));
+    width: min(var(--dn-max), 100% - 2 * var(--dn-gutter));
     height: var(--dn-nav-h);
     margin-inline: auto;
 }
@@ -881,7 +883,7 @@ h3 {
 
 @supports (width: 1cqw) {
     .dn-hero-visual {
-        --u: calc(min(100cqw, 560px) / 560);
+        --u: calc(min(100cqw, 700px) / 560);
     }
 
     @media (max-width: 639.98px) {
@@ -1842,7 +1844,7 @@ h3 {
 
 @media (min-width: 640px) {
     .dn-footer-grid > * {
-        grid-column: span 6;
+        grid-column: span 4;
     }
 
     .dn-footer-grid > .dn-footer-about {
@@ -1855,17 +1857,17 @@ h3 {
         grid-column: 1 / span 4;
     }
 
-    .dn-footer-grid > .dn-footer-nav {
-        grid-column: 6 / span 2;
+    .dn-footer-grid > .dn-footer-col {
+        grid-column: span 3;
     }
 
-    .dn-footer-grid > .dn-footer-contact {
-        grid-column: 8 / span 3;
+    .dn-footer-grid > .dn-footer-col:last-child {
+        grid-column: span 2;
     }
+}
 
-    .dn-footer-grid > .dn-footer-social {
-        grid-column: 11 / span 2;
-    }
+.dn-footer-contact-list {
+    margin-top: var(--dn-s4);
 }
 
 .dn-footer-brand {
@@ -2578,4 +2580,631 @@ h3 {
         opacity: 1 !important;
         translate: none !important;
     }
+}
+
+/* =====================================================================
+   RÉFÉRENCEMENT : menus déroulants, fil d'Ariane, questions fréquentes,
+   métiers, bouton WhatsApp mobile
+   ===================================================================== */
+.dn-chevron {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    transition: transform .25s var(--dn-ease);
+}
+
+.dn-sub-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    color: #A9ACB2;
+}
+
+.dn-sub-btn[aria-expanded="true"] .dn-chevron {
+    transform: rotate(180deg);
+}
+
+.dn-sub ul {
+    display: grid;
+    gap: 2px;
+}
+
+.dn-sub a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px 10px 10px 0;
+    color: #C9CBCF;
+    font-size: 14px;
+    line-height: 1.35;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.dn-sub a:hover {
+    color: var(--dn-white);
+    background: rgba(255, 255, 255, .06);
+}
+
+.dn-sub-all a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    color: var(--dn-white);
+}
+
+.dn-sub-all svg {
+    width: 14px;
+    height: 14px;
+}
+
+@media (min-width: 992px) {
+    .dn-has-sub {
+        position: relative;
+    }
+
+    /* Pont invisible : le menu reste ouvert quand la souris descend dessus. */
+    .dn-has-sub::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: -12px;
+        right: -12px;
+        height: 18px;
+    }
+
+    .dn-sub {
+        position: absolute;
+        top: calc(100% + 16px);
+        left: -16px;
+        z-index: 5;
+        width: max-content;
+        min-width: 250px;
+        max-width: 320px;
+        padding: 8px;
+        border: 1px solid var(--dn-line-dark);
+        border-radius: var(--dn-frame);
+        background: #0F0F10;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity .2s ease, transform .25s var(--dn-ease), visibility 0s linear .25s;
+    }
+
+    .dn-sub-btn[aria-expanded="true"] + .dn-sub,
+    .dn-has-sub:focus-within .dn-sub {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity .2s ease, transform .25s var(--dn-ease), visibility 0s;
+    }
+}
+
+@media (min-width: 992px) and (hover: hover) {
+    .dn-has-sub:hover .dn-sub {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity .2s ease, transform .25s var(--dn-ease), visibility 0s;
+    }
+
+    .dn-has-sub:hover .dn-chevron {
+        transform: rotate(180deg);
+    }
+
+    .dn-has-sub:hover .dn-sub-btn {
+        color: var(--dn-white);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .dn-sub-btn {
+        width: 100%;
+        text-align: left;
+    }
+
+    .dn-sub-btn .dn-chevron {
+        width: 22px;
+        height: 22px;
+        margin-left: auto;
+    }
+
+    .dn-sub {
+        display: none;
+        padding: 0 0 16px;
+    }
+
+    .dn-sub-btn[aria-expanded="true"] + .dn-sub {
+        display: block;
+    }
+
+    .dn-nav-links .dn-sub li {
+        border-bottom: 0;
+    }
+
+    .dn-sub a {
+        padding: 10px 0;
+        font-size: 18px;
+    }
+
+    .dn-sub a:hover {
+        background: none;
+    }
+}
+
+/* Fil d'Ariane */
+.dn-crumbs {
+    margin-bottom: var(--dn-s4);
+}
+
+.dn-crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    color: var(--c-muted);
+    font-family: var(--dn-mono);
+    font-size: 12px;
+}
+
+.dn-crumbs li + li::before {
+    content: "/";
+    margin: 0 8px;
+    color: #55575B;
+}
+
+.dn-crumbs a {
+    color: var(--c-text);
+}
+
+.dn-crumbs a:hover {
+    color: var(--c-title);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Questions fréquentes */
+.dn-faq {
+    border-top: 1px solid var(--c-line);
+}
+
+.dn-faq-item {
+    border-bottom: 1px solid var(--c-line);
+}
+
+.dn-faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--dn-s3);
+    padding: 22px 0;
+    cursor: pointer;
+    list-style: none;
+}
+
+.dn-faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.dn-faq-item summary h3 {
+    font-size: 18px;
+    line-height: 1.35;
+}
+
+.dn-faq-item summary .dn-chevron {
+    width: 18px;
+    height: 18px;
+    color: var(--c-muted);
+}
+
+.dn-faq-item[open] summary .dn-chevron {
+    transform: rotate(180deg);
+}
+
+.dn-faq-answer {
+    padding: 0 40px 24px 0;
+}
+
+.dn-faq-answer p {
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+/* Données manquantes, bien visibles tant qu'elles ne sont pas remplies */
+.dn-todo {
+    padding: 1px 6px;
+    border-radius: 6px 6px 6px 0;
+    color: #5C4400;
+    background: #FFF3BF;
+    font-family: var(--dn-mono);
+    font-size: .85em;
+}
+
+/* Liens dans le texte */
+.dn-prose a,
+.dn-feature p a,
+.dn-faq-answer a {
+    color: var(--c-title);
+    text-decoration: underline;
+    text-decoration-color: var(--c-accent);
+    text-underline-offset: 3px;
+}
+
+.dn-feature h3 a,
+.dn-offer-main h3 a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--c-line-strong);
+    text-underline-offset: 5px;
+    transition: text-decoration-color .2s ease;
+}
+
+.dn-feature h3 a:hover,
+.dn-offer-main h3 a:hover {
+    text-decoration-color: currentColor;
+}
+
+.dn-offer-main .dn-link {
+    margin-top: var(--dn-s4);
+}
+
+@media (min-width: 1024px) {
+    .dn-features-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.dn-prose-wide {
+    max-width: 860px;
+    margin-top: var(--dn-s6);
+}
+
+.dn-section-tight {
+    padding-block: calc(var(--dn-section) * .75);
+}
+
+/* Solutions par métier */
+.dn-subhead {
+    margin: var(--dn-s8) 0 var(--dn-s5);
+    padding-top: var(--dn-s6);
+    border-top: 1px solid var(--c-line);
+}
+
+.dn-subtitle {
+    max-width: 720px;
+    color: var(--c-title);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+}
+
+.dn-metiers {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .dn-metiers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .dn-metiers {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.dn-metiers a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    padding: 20px 20px 52px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--dn-frame);
+    color: var(--c-title);
+    transition: border-color .2s ease, background-color .2s ease;
+}
+
+.dn-metiers a:hover {
+    border-color: var(--c-title);
+    background: var(--c-soft);
+}
+
+.dn-metiers strong {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+}
+
+.dn-metier-text {
+    color: var(--c-muted);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.dn-metiers svg {
+    position: absolute;
+    bottom: 18px;
+    left: 20px;
+    width: 18px;
+    height: 18px;
+    transition: transform .25s var(--dn-ease);
+}
+
+.dn-metiers a:hover svg {
+    transform: translateX(4px);
+}
+
+/* Bouton WhatsApp fixe : mobile seulement (l'Assistant y est masqué) */
+.dn-wa-float {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .dn-wa-float {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 1040;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 52px;
+        padding: 0 18px;
+        border-radius: var(--dn-shape);
+        color: var(--dn-ink);
+        background: var(--dn-wa);
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .dn-wa-float svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .deks-chatbot {
+        display: none !important;
+    }
+
+    .dn-top {
+        right: 16px;
+        bottom: 80px;
+    }
+
+    .dn-footer {
+        padding-bottom: 96px;
+    }
+}
+
+.dn-menu-open .dn-wa-float {
+    display: none;
+}
+
+/* Avis Google : cartes en HTML (grille sur ordinateur, défilement horizontal sur mobile) */
+.dn-reviews-list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 86%;
+    gap: var(--dn-s3);
+    margin: var(--dn-s5) calc(-1 * var(--dn-gutter)) 0;
+    padding: 0 var(--dn-gutter) var(--dn-s2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--dn-gutter);
+    -webkit-overflow-scrolling: touch;
+}
+
+.dn-reviews-list {
+    scrollbar-width: none;
+}
+
+.dn-reviews-list::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .dn-reviews-list {
+        grid-auto-columns: calc((100% - var(--dn-s3)) / 2);
+        margin: var(--dn-s5) 0 0;
+        padding: 0;
+        scroll-padding-inline: 0;
+    }
+}
+
+@media (min-width: 1100px) {
+    .dn-reviews-list {
+        grid-auto-columns: calc((100% - 2 * var(--dn-s3)) / 3);
+    }
+}
+
+.dn-reviews-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--dn-s3);
+    margin-top: var(--dn-s5);
+}
+
+.dn-reviews-bar .dn-actions {
+    margin-top: 0;
+}
+
+.dn-carousel-nav {
+    display: flex;
+    gap: var(--dn-s1);
+}
+
+.dn-carousel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--dn-shape-sm);
+    color: var(--c-title);
+    background: transparent;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.dn-carousel-btn:hover:not(:disabled) {
+    border-color: var(--c-title);
+    color: var(--dn-white);
+    background: var(--c-title);
+}
+
+.dn-carousel-btn:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+.dn-carousel-btn[data-dir="-1"] svg {
+    transform: rotate(180deg);
+}
+
+.dn-carousel-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.dn-review {
+    scroll-snap-align: start;
+}
+
+.dn-review figure {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding: var(--dn-s5);
+    border: 1px solid var(--c-line);
+    border-radius: var(--dn-frame);
+    background: var(--dn-white);
+}
+
+.dn-stars {
+    display: flex;
+    gap: 2px;
+    color: #F5B301;
+}
+
+.dn-stars svg {
+    width: 18px;
+    height: 18px;
+}
+
+.dn-review blockquote {
+    flex: 1 1 auto;
+    margin: var(--dn-s4) 0 0;
+}
+
+.dn-review blockquote p {
+    color: var(--c-title);
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.dn-review figcaption {
+    display: grid;
+    gap: 2px;
+    margin-top: var(--dn-s4);
+    padding-top: var(--dn-s3);
+    border-top: 1px solid var(--c-line);
+}
+
+.dn-review figcaption strong {
+    font-size: 15px;
+}
+
+.dn-review figcaption span {
+    color: var(--c-muted);
+    font-family: var(--dn-mono);
+    font-size: 12px;
+}
+
+.dn-reviews .dn-actions {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.dn-reviews-note {
+    color: var(--c-muted);
+    font-size: 14px;
+}
+
+/* =====================================================================
+   BLOG : article
+   ===================================================================== */
+.dn-article-meta {
+    margin-top: var(--dn-s4);
+    color: var(--c-muted);
+    font-family: var(--dn-mono);
+    font-size: 12px;
+    letter-spacing: .02em;
+}
+
+.dn-article {
+    max-width: 760px;
+}
+
+.dn-article h2 {
+    margin: var(--dn-s7) 0 var(--dn-s3);
+    color: var(--c-title);
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -.025em;
+    scroll-margin-top: calc(var(--dn-nav-h) + 24px);
+}
+
+.dn-article h2:first-child {
+    margin-top: 0;
+}
+
+.dn-article ul {
+    margin: var(--dn-s4) 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--c-line);
+}
+
+.dn-article li {
+    position: relative;
+    padding: 14px 0 14px 28px;
+    border-bottom: 1px solid var(--c-line);
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.dn-article li::before {
+    content: "";
+    position: absolute;
+    top: 26px;
+    left: 0;
+    width: 12px;
+    height: 2px;
+    background: var(--c-accent);
+}
+
+.dn-row h3 a {
+    color: inherit;
+}
+
+.dn-row h3 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }

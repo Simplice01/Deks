@@ -17,6 +17,34 @@
 
     root.classList.add("dn-ready");
 
+    /* Carrousel des avis : boutons précédent / suivant sur le défilement natif. */
+    Array.prototype.forEach.call(document.querySelectorAll("[data-carousel]"), function (carousel) {
+        var track = carousel.querySelector(".dn-reviews-list");
+        var prev = carousel.querySelector('[data-dir="-1"]');
+        var next = carousel.querySelector('[data-dir="1"]');
+        if (!track || !prev || !next) {
+            return;
+        }
+        var step = function () {
+            var card = track.querySelector("li");
+            var gap = parseFloat(window.getComputedStyle(track).columnGap) || 16;
+            return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+        };
+        var update = function () {
+            prev.disabled = track.scrollLeft <= 2;
+            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+        };
+        var move = function (direction) {
+            track.scrollBy({ left: direction * step(), behavior: reduceMotion ? "auto" : "smooth" });
+        };
+        prev.addEventListener("click", function () { move(-1); });
+        next.addEventListener("click", function () { move(1); });
+        track.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+        update();
+    });
+
+
     if (!items.length) {
         return;
     }

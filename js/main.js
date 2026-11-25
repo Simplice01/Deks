@@ -163,6 +163,44 @@
         }
     }
 
+    /* --- Sous-menus Services et Métiers --- */
+    var subButtons = Array.prototype.slice.call(document.querySelectorAll(".dn-sub-btn"));
+    var closeSubs = function (except) {
+        subButtons.forEach(function (button) {
+            if (button !== except) {
+                button.setAttribute("aria-expanded", "false");
+            }
+        });
+    };
+
+    subButtons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
+            event.stopPropagation();
+            var open = button.getAttribute("aria-expanded") === "true";
+            closeSubs(button);
+            button.setAttribute("aria-expanded", String(!open));
+        });
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".dn-has-sub")) {
+            closeSubs(null);
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape") {
+            return;
+        }
+        var opened = subButtons.filter(function (button) {
+            return button.getAttribute("aria-expanded") === "true";
+        })[0];
+        if (opened) {
+            closeSubs(null);
+            opened.focus();
+        }
+    });
+
     /* --- Assistant --- */
     var svg = function (path, filled) {
         return '<svg viewBox="0 0 24 24" fill="' + (filled ? "currentColor" : "none") + '" stroke="' + (filled ? "none" : "currentColor") + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="' + path + '"/></svg>';

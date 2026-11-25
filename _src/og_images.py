@@ -25,6 +25,9 @@ IMAGES = [
     ("contact", "Contact", "Parlons de votre projet", "votre projet", "Réponse sur WhatsApp : +229 01 94 77 62 56"),
     ("logiciel-de-gestion-benin", "Logiciel de gestion", "Logiciel de gestion sur mesure au Bénin", "sur mesure", "Clients, ventes, factures, stocks et tableaux de bord"),
 ]
+sys.path.insert(0, str(HERE))
+import build_site  # noqa: E402  (pages services, métiers et blog)
+IMAGES += build_site.og_specs()
 
 
 def face_css():

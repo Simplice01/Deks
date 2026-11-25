@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deksnexa.com/sitemap.xml

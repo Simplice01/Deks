@@ -13,11 +13,13 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common3 import (ARROW, BAG, FB, IG, LOCK, MAIL, MENU, PHONE, SPARK, SPRITE, UP, USER, WA, PROJECTS, STEPS,
                     TECH, WHY, icon, serif)
 import content3 as C
+import content_pages as CP
+import content_blog as BLOG
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # racine du site
 SITE = "https://deksnexa.com"
-VERSION = "20261124"
-TODAY = "2026-11-24"
+VERSION = "20261125"
+TODAY = "2026-11-25"
 FONTS = "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
 WA_NUM = "2290194776256"
 EMAIL = "contact@deksnexa.com"
@@ -54,7 +56,7 @@ ORGANIZATION = {
     "description": "Logiciels de gestion sur mesure, sites web, applications mobiles, automatisations WhatsApp et IA, et référencement Google pour les entreprises au Bénin et en Afrique francophone.",
     "email": EMAIL,
     "telephone": "+229 01 94 77 62 56",
-    "sameAs": ["https://www.facebook.com/deksnexa", "https://www.instagram.com/deksnexa/"],
+    "sameAs": ["https://www.facebook.com/deksnexa", "https://www.instagram.com/deksnexa/", "https://maps.app.goo.gl/rzvPmQ1cR6AUEbaQ9"],
     "areaServed": [
         {"@type": "Country", "name": "Bénin"},
         {"@type": "City", "name": "Cotonou"},
@@ -83,6 +85,18 @@ def graph(page):
         nodes.append({"@type": "Service", "@id": url + "#service", "name": page["service"],
                       "serviceType": page.get("service_type", page["service"]), "url": url,
                       "description": page["description"], "provider": {"@id": ORG_ID}, "areaServed": AREA})
+    if page.get("article"):
+        nodes.append({"@type": "BlogPosting", "@id": url + "#article", "headline": page["h1"],
+                      "description": page["description"], "url": url, "inLanguage": "fr",
+                      "datePublished": BLOG.PUBLISHED, "dateModified": BLOG.PUBLISHED,
+                      "image": f"{SITE}/image/og/{page['og']}.jpg", "wordCount": page["words"],
+                      "author": {"@id": ORG_ID}, "publisher": {"@id": ORG_ID},
+                      "mainEntityOfPage": {"@id": url + "#page"}, "isPartOf": {"@id": SITE + "/blog/#blog"}})
+    if page.get("blog"):
+        nodes.append({"@type": "Blog", "@id": url + "#blog", "url": url, "name": "Blog Deks Nexa", "inLanguage": "fr",
+                      "publisher": {"@id": ORG_ID},
+                      "blogPost": [{"@type": "BlogPosting", "headline": a["h1"], "url": SITE + a["url"],
+                                    "datePublished": BLOG.PUBLISHED} for a in BLOG.ARTICLES]})
     if page.get("faq"):
         nodes.append({"@type": "FAQPage", "@id": url + "#faq", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", a)}}
@@ -99,6 +113,7 @@ def head(page):
     assert 140 <= len(desc) <= 155, (page["url"], len(desc), desc)
     image = f"{SITE}/image/og/{page['og']}.jpg"
     robots = '\n    <meta name="robots" content="noindex">' if page.get("noindex") else ""
+    canonical = "" if page.get("noindex") else f'\n    <link rel="canonical" href="{url}">'
     return f"""<!DOCTYPE html>
 <html lang="fr">
 
@@ -108,8 +123,7 @@ def head(page):
     <meta charset="utf-8">
     <title>{esc(title)}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{esc(desc)}">{robots}
-    <link rel="canonical" href="{url}">
+    <meta name="description" content="{esc(desc)}">{robots}{canonical}
     <meta property="og:type" content="{page.get('og_type', 'website')}">
     <meta property="og:locale" content="fr_FR">
     <meta property="og:site_name" content="Deks Nexa">
@@ -260,13 +274,18 @@ def crumbs_html(crumbs):
     return f'<nav class="dn-crumbs" aria-label="Fil d\'Ariane"><ol>{"".join(items)}</ol></nav>\n'
 
 
-def page_hero(page, label, title, word, intro, buttons=True, second=None):
+def nbsp(text):
+    """Typographie française : pas de « : » ni de « ? » en début de ligne."""
+    return text.replace(" :", "&nbsp;:").replace(" ?", "&nbsp;?")
+
+
+def page_hero(page, label, title, word, intro, buttons=True, second=None, meta=""):
     crumbs = crumbs_html(page["crumbs"]) if page.get("crumbs") else ""
-    actions = ""
+    actions = f'<p class="dn-article-meta">{meta}</p>\n' if meta else ""
     if buttons:
-        actions = '<div class="dn-actions">' + wa_btn(page["wa"]) + (outline_btn(*second) if second else "") + "</div>\n"
+        actions += '<div class="dn-actions">' + wa_btn(page["wa"]) + (outline_btn(*second) if second else "") + "</div>\n"
     return (f'<section class="dn-page-hero dn-dark">\n<div class="dn-container">\n{crumbs}<p class="dn-label">{label}</p>\n'
-            f'<h1>{serif(title, word)}</h1>\n<p class="dn-intro">{intro}</p>\n{actions}</div>\n</section>\n')
+            f'<h1>{nbsp(serif(title, word))}</h1>\n<p class="dn-intro">{intro}</p>\n{actions}</div>\n</section>\n')
 
 
 def cta(page):
@@ -351,13 +370,13 @@ def reviews_block():
     for r in C.REVIEWS:
         if not r["text"].strip():
             continue  # texte non fourni : on n'affiche pas
-        cards += (f'<li class="dn-review dn-reveal"><figure>'
+        cards += (f'<li class="dn-review"><figure>'
                   f'<div class="dn-stars" role="img" aria-label="{r["stars"]} étoiles sur 5">{STAR * r["stars"]}</div>'
                   f'<blockquote><p>{html.escape(r["text"], quote=False)}</p></blockquote>'
                   f'<figcaption><strong>{html.escape(r["name"], quote=False)}</strong><span>{C.REVIEWS_SOURCE}</span></figcaption>'
                   f'</figure></li>\n')
     if C.REVIEWS_URL:
-        button = f'<a class="dn-btn dn-btn-outline" href="{esc(C.REVIEWS_URL)}" target="_blank" rel="noopener">Voir tous les avis sur Google{ARROW}</a>'
+        button = f'<a class="dn-btn dn-btn-outline" href="{esc(C.REVIEWS_URL)}" target="_blank" rel="noopener noreferrer">Voir tous les avis sur Google{ARROW}</a>'
     else:
         button = (f'<a class="dn-btn dn-btn-outline" href="#avis">Voir tous les avis sur Google{ARROW}</a>'
                   f'<p class="dn-reviews-note"><mark class="dn-todo">[À COMPLÉTER]</mark> lien Google Maps de la fiche</p>')
@@ -401,6 +420,108 @@ def landing(p):
              + related(p["related"]) + "</div>\n</section>\n")
     body += cta(p)
     return head(p) + nav(p["nav"]) + body + footer(p["wa"]) + scripts()
+
+
+# ------------------------------------------------------------------ blog
+def md(text):
+    """Mini-format des articles : « ## » intertitre, « - » liste, sinon paragraphe."""
+    out = ""
+    for block in text.strip().split("\n\n"):
+        lines = [x.strip() for x in block.strip().split("\n")]
+        if lines[0].startswith("## "):
+            out += f'<h2 id="{slug(lines[0][3:])}">{lines[0][3:]}</h2>\n'
+        elif all(x.startswith("- ") for x in lines):
+            out += "<ul>\n" + "".join(f"<li>{x[2:]}</li>\n" for x in lines) + "</ul>\n"
+        else:
+            out += f"<p>{' '.join(lines)}</p>\n"
+    return out
+
+
+def slug(text):
+    import unicodedata
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+
+
+def words(text):
+    return len(re.findall(r"[A-Za-zÀ-ÿ0-9’'-]+", re.sub(r"<[^>]+>", " ", html.unescape(text))))
+
+
+def blog_rows(posts):
+    out = '<ol class="dn-rows">\n'
+    for i, a in enumerate(posts, 1):
+        out += (f'<li class="dn-row dn-reveal">\n<span class="dn-row-num" aria-hidden="true">{i:02d}</span>\n<div>\n'
+                f'<p class="dn-tag">{a["label"]}</p>\n<h3><a href="{a["url"]}">{esc(a["h1"])}</a></h3>\n'
+                f'<p class="dn-row-problem">{a["description"]}</p>\n</div>\n'
+                f'<a class="dn-row-go" href="{a["url"]}" aria-label="Lire l\'article : {esc(a["h1"])}">{ARROW}</a>\n</li>\n')
+    return out + "</ol>\n"
+
+
+def page_blog():
+    p = BLOG.BLOG
+    body = (page_hero(p, p["label"], p["h1"], p["h1_word"], p["intro"], second=("Voir nos services", "/service.html"))
+            + '<section class="dn-section">\n<div class="dn-container">\n'
+            + section_head("Articles", "À lire pour avancer sur votre projet.", "avancer",
+                           "Des réponses claires aux questions que se posent les entreprises avant de se lancer.")
+            + blog_rows(BLOG.ARTICLES) + "</div>\n</section>\n" + cta(p))
+    return head(p) + nav("blog") + body + footer(p["wa"]) + scripts()
+
+
+def page_article(p):
+    minutes = max(1, round(p["words"] / 200))
+    meta = f'Publié le {BLOG.PUBLISHED_FR} · {minutes} min de lecture'
+    others = [a for a in BLOG.ARTICLES if a["url"] != p["url"]]
+    body = (page_hero(p, "Blog · " + p["label"], p["h1"], p["h1_word"], p["intro"], buttons=False, meta=meta)
+            + '<section class="dn-section">\n<div class="dn-container">\n'
+            + f'<article class="dn-prose dn-article">\n{md(p["body"])}</article>\n'
+            + '<div class="dn-subhead dn-reveal"><p class="dn-label">À voir aussi</p><h2 class="dn-subtitle">Nos services liés à cet article.</h2></div>\n'
+            + related(p["related"])
+            + '<div class="dn-subhead dn-reveal"><p class="dn-label">Sur le blog</p><h2 class="dn-subtitle">Autres articles.</h2></div>\n'
+            + blog_rows(others) + "</div>\n</section>\n" + cta(p))
+    return head(p) + nav("blog") + body + footer(p["wa"]) + scripts()
+
+
+# ------------------------------------------------------------------ pages services, métiers et blog : préparation
+def prepare():
+    for s in C.SERVICES:
+        extra = CP.SERVICE_PAGES.get(s["url"])
+        if extra:
+            s.update(extra)
+            s.setdefault("ready", True)
+            s.setdefault("nav", "services")
+            s.setdefault("og", s["url"].strip("/"))
+            s.setdefault("crumbs", [("Accueil", "/"), ("Services", "/service.html"), (s["menu"], s["url"])])
+    for m in C.METIERS:
+        extra = CP.METIER_PAGES.get(m["url"])
+        if extra:
+            m.update(extra)
+            m.setdefault("ready", True)
+            m.setdefault("nav", "metiers")
+            m.setdefault("og", "solutions-" + m["url"].strip("/").split("/")[-1])
+            m.setdefault("crumbs", [("Accueil", "/"), ("Solutions par métier", "/service.html#metiers"), (m["menu"], m["url"])])
+    for s in C.SERVICES + C.METIERS:
+        if s.get("ready"):
+            s.setdefault("og_alt", s["h1"] + ", par Deks Nexa")
+            s.setdefault("service", s["h1"].replace(" au Bénin", ""))
+            s.setdefault("problem_label", "Le problème")
+    BLOG.BLOG["blog"] = True
+    for a in BLOG.ARTICLES:
+        a.update(nav="blog", article=True, og_type="article", og_alt=a["h1"],
+                 crumbs=[("Accueil", "/"), ("Blog", "/blog/"), (a["short"], a["url"])], words=words(md(a["body"])))
+
+
+def og_specs():
+    """Images de partage des pages générées ici (utilisé par og_images.py)."""
+    prepare()
+    specs = []
+    for s in C.SERVICES + C.METIERS:
+        if s.get("ready") and s["og"] != "logiciel-de-gestion-benin":
+            specs.append((s["og"], s["label"], s["h1"].replace(" au Bénin", ""), s["h1_word"], s["teaser"].rstrip(".") + " · Bénin"))
+    b = BLOG.BLOG
+    specs.append((b["og"], "Blog", b["og_title"], b["og_word"], b["og_sub"]))
+    for a in BLOG.ARTICLES:
+        specs.append((a["og"], "Blog · " + a["label"], a["og_title"], a["og_word"], "Le blog Deks Nexa"))
+    return specs
 
 
 # ------------------------------------------------------------------ pages existantes
@@ -528,6 +649,7 @@ def main_words(text):
 
 
 if __name__ == "__main__":
+    prepare()
     built = []
     pages = [("index.html", page_index, C.HOME), ("service.html", page_service, C.HUB),
              ("about.html", page_about, C.ABOUT), ("projets.html", page_projets, C.PROJETS),
@@ -535,11 +657,16 @@ if __name__ == "__main__":
     for s in C.SERVICES + C.METIERS:
         if s.get("ready"):
             pages.append((s["url"].strip("/") + "/index.html", lambda s=s: landing(s), s))
+    pages.append(("blog/index.html", page_blog, BLOG.BLOG))
+    for a in BLOG.ARTICLES:
+        assert a["words"] >= 800, (a["url"], a["words"])
+        pages.append((a["url"].strip("/") + "/index.html", lambda a=a: page_article(a), a))
     for rel, fn, meta in pages:
         text = fn()
         write(rel, text)
         built.append(meta)
-        print(f"{rel:48} title {len(meta['title']):2}  desc {len(meta['description'])}  mots {main_words(text)}")
+        extra = f"  article {meta['words']}" if meta.get("article") else ""
+        print(f"{rel:64} title {len(meta['title']):2}  desc {len(meta['description'])}  mots {main_words(text)}{extra}")
     # Plan du site : uniquement les pages publiées et indexables
     urls = "".join(f"  <url><loc>{SITE}{m['url']}</loc><lastmod>{TODAY}</lastmod></url>\n" for m in built if not m.get("noindex"))
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
