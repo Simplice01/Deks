@@ -141,13 +141,27 @@
                 status.classList.add('is-visible');
             }
 
-            if (typeof window.gtag === 'function') {
-                window.gtag('event', 'contact_form_submit', { page_path: window.location.pathname });
-            }
-
-            window.setTimeout(function () {
+            // Redirection vers WhatsApp dès que GA4 a envoyé l'événement (au plus tard 1,5 s) : jamais bloquée.
+            let redirected = false;
+            const goToWhatsApp = function () {
+                if (redirected) {
+                    return;
+                }
+                redirected = true;
                 window.location.href = `https://wa.me/2290194776256?text=${encodeURIComponent(whatsappMessage)}`;
-            }, 450);
+            };
+
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', 'contact_form_submit', {
+                    page_path: window.location.pathname,
+                    transport_type: 'beacon',
+                    event_callback: goToWhatsApp,
+                    event_timeout: 1200
+                });
+                window.setTimeout(goToWhatsApp, 1500);
+            } else {
+                window.setTimeout(goToWhatsApp, 450);
+            }
         });
     </script>
     <script src="js/main.js" defer></script>
