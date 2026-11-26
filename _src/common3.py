@@ -123,7 +123,7 @@ FOOTER = f"""    </main>
                 </div>
                 <div class="dn-footer-social">
                     <p class="dn-tag dn-footer-title">Réseaux</p>
-                    <ul><li><a href="https://www.facebook.com/deksnexa" target="_blank" rel="noopener">{FB}Facebook</a></li><li><a href="https://www.instagram.com/deksnexa/" target="_blank" rel="noopener">{IG}Instagram</a></li></ul>
+                    <ul><li><a href="https://www.facebook.com/deksnexa" target="_blank" rel="noopener">{FB}Facebook</a></li><li><a href="https://www.instagram.com/deksnexa/" target="_blank" rel="noopener">{IG}Instagram</a></li><li><a href="https://www.linkedin.com/company/deksnexa/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li><li><a href="https://www.tiktok.com/@deksnexa" target="_blank" rel="noopener noreferrer">TikTok</a></li></ul>
                 </div>
             </div>
             <div class="dn-footer-bottom"><span>© Deks Nexa. Tous droits réservés.</span></div>
