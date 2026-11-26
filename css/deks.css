@@ -1826,7 +1826,7 @@ h3 {
    PIED DE PAGE — fond clair, bien séparé de l'appel final (noir)
    ===================================================================== */
 .dn-footer {
-    padding: var(--dn-s8) 0 var(--dn-s5);
+    padding: var(--dn-s8) 0 var(--dn-s3);
     border-top: 1px solid var(--dn-line);
     color: var(--dn-muted);
     background: var(--dn-paper);
@@ -1892,6 +1892,32 @@ h3 {
     gap: 10px;
 }
 
+.dn-footer .dn-footer-social-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: var(--dn-s4);
+}
+
+.dn-footer-social-links a {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--dn-line);
+    border-radius: 50%;
+    color: var(--dn-text);
+    transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+}
+
+.dn-footer li .dn-footer-social-links a:hover {
+    color: var(--dn-ink);
+    background: var(--dn-paper);
+    border-color: var(--dn-ink);
+    text-decoration: none;
+}
+
 .dn-footer li a {
     display: inline-flex;
     align-items: center;
@@ -1918,7 +1944,7 @@ h3 {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--dn-s2);
-    margin-top: var(--dn-s8);
+    margin-top: var(--dn-s6);
     padding-top: var(--dn-s4);
     border-top: 1px solid #DADAD6;
     color: var(--dn-muted);
