@@ -327,7 +327,7 @@ CONTACT_SCRIPT = """    <script>
 # Recopiés MOT POUR MOT depuis la fiche Google. Pour ajouter un avis : une ligne de plus dans REVIEWS.
 # Un avis dont le texte est vide n'est pas affiché (on n'invente rien).
 # AUCUNE donnée structurée AggregateRating / Review pour ces avis (interdit par Google pour ses propres avis).
-REVIEWS_SOURCE = "Avis Google · novembre 2026"
+REVIEWS_SOURCE = "Avis"
 REVIEWS = [
     dict(name="Tania G.", stars=5, text="Je suis très satisfait du travail réalisé par DEKS NEXA pour la création de mon site web. Le design est moderne, la navigation est fluide et le résultat est vraiment professionnel. Merci pour votre sérieux !"),
     dict(name="Audrey H.", stars=5, text="J'ai fait appel à DEKS NEXA pour développer une application adaptée à mon activité. Je suis satisfait du résultat, l'application répond bien à mes besoins et le suivi a été appréciable. Merci pour le travail !"),

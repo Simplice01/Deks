@@ -18,7 +18,7 @@ import content_blog as BLOG
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # racine du site
 SITE = "https://deksnexa.com"
-VERSION = "20261125"
+VERSION = "20261126"
 TODAY = "2026-11-25"
 FONTS = "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
 WA_NUM = "2290194776256"
@@ -373,7 +373,7 @@ def reviews_block():
         cards += (f'<li class="dn-review"><figure>'
                   f'<div class="dn-stars" role="img" aria-label="{r["stars"]} étoiles sur 5">{STAR * r["stars"]}</div>'
                   f'<blockquote><p>{html.escape(r["text"], quote=False)}</p></blockquote>'
-                  f'<figcaption><strong>{html.escape(r["name"], quote=False)}</strong><span>{C.REVIEWS_SOURCE}</span></figcaption>'
+                  f'<figcaption><strong>{html.escape(r["name"], quote=False)}</strong><span>{C.REVIEWS_SOURCE} <img class="dn-google-logo" src="/image/google-g.png" alt="Google" width="18" height="18"></span></figcaption>'
                   f'</figure></li>\n')
     if C.REVIEWS_URL:
         button = f'<a class="dn-btn dn-btn-outline" href="{esc(C.REVIEWS_URL)}" target="_blank" rel="noopener noreferrer">Voir tous les avis sur Google{ARROW}</a>'

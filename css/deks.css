@@ -3136,6 +3136,14 @@ h3 {
     font-size: 12px;
 }
 
+.dn-review .dn-google-logo {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
 .dn-reviews .dn-actions {
     flex-wrap: wrap;
     align-items: center;
